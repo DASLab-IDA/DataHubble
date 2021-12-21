@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="vendors/css/sycm.css">
+    <link rel="stylesheet" href="vendors/css/robot/robot.css">
+</head>
+
+<body>
+    <div class="row">
+        <div id="currentstatus" class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="headline">
+                        <div id="title">
+                            <p style="font-size: 20px">&nbsp;&nbsp;&nbsp;实时概况</p>
+                        </div>
+                        <div id="updatetime">更新时间：{{currenttime}}&nbsp;</div>
+                    </div>
+                    <div id="statuscard">
+                        <div id="status_left" class="col-md-7">
+                            <div id="card_left">
+                                <div class="col-md-1">
+                                    <i class="fa fa-cny" style="font-size: 60px;color:blue"></i>
+                                </div>
+                                <div class="col-md-4">
+                                    支付金额（元）：<br>
+                                    <p id="paid">{{paid}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <!--留空-->
+                                </div>
+                                <div class="col-md-4" id=status_data>
+                                    行业排名&nbsp;&nbsp;<span>{{rank}}</span><br>
+                                    无线占比&nbsp;&nbsp;<span>{{ratio}}</span><br>
+                                    昨日全天&nbsp;&nbsp;<span>{{yeste}}</span><br>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="chart_currentstatus_left"></div>
+                        </div>
+                        <div id="status_right" class="col-md-5">
+                            <br>
+                            <div class="col-md-6" v-for="c in cards">
+                                <div class="col-md-3">
+                                    <i :class="c.img" :style="c.style"></i>
+                                </div>
+                                <div class="col-md-9">
+                                    {{c.column}}<br>
+                                    {{c.nums}}
+                                </div>
+                                <div id='nums' class="col-md-12">
+                                    无线占比 <span>{{c.percent}}</span>&nbsp;&nbsp;排名 <span>{{c.rating}}</span><br>昨日全天
+                                    <span>{{c.yesterday}}</span>
+                                </div>
+                                <div class="col-md-12"><br></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="shopsurvey" class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="survey_headline">
+                        <div id="title">
+                            <h4>店铺概况</h4>
+                        </div>
+                        <div id="survey_updatetime">更新时间：{{currenttime}}</div>
+                    </div>
+                    <div id="surveycard">
+                        <div class="row">
+                            <div class="col-md-6" id="survey_rank">
+                                <br>
+                                <span style="font-size: 15px">近30天支付金额排行</span><br>
+                                <span style="font-size: 27px">{{paymentrank}}名<br></span>
+                                <span style="font-size: 12px;color:gray">较前日 <i :class="up"
+                                        :style="color"></i>{{changement}}名</span>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="chart_shopsurvey_rank"></div>
+                            </div>
+                        </div>
+                        <div id="survey_progress">
+                            <br>
+                            &nbsp;&nbsp;<p style="font-size:14px">本月销售目标进度：</p>
+                            <div id="progress_textline">
+                                <div id="percentage" style="float:left">&nbsp;&nbsp;{{percentage}}</div>
+                                <div id="plandata" style="float:right">{{now}}/{{plan}}&nbsp;&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="chart_shopsurvey_progress" class="row"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-default" role="navigation" style="position: sticky ;top:0px;z-index:999">
+        <div class="container-fluid"></div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a data-toggle="tab" href="#operation_window">运营视窗</a></li>
+                <li><a data-toggle="tab" href="#service_window">服务视窗</a></li>
+                <li><a data-toggle="tab" href="#manage_window">管理视窗</a></li>
+            </ul>
+            <div style="float:right;margin-top:8px">
+                <div class="input-group" style="color:rgb(0, 0, 0);">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control" type="text" id="datepicker1" value="2010/01/01 00:00" />
+                    <span class="input-group-addon">-</span>
+                    <input class="form-control" type="text" id="datepicker2" />
+                    <span class="input-group-btn"><button class="btn btn-default" onclick="alert('1')"><i
+                                class="fa fa-search"></i></button></span>
+
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="operation_window">
+            <div class="row">
+                <div class="col-md-12" id="op_1">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            整体看板
+                        </div>
+                        <div class="panel-body">
+                            <div id="total_static" class="col-md-12">
+                                <table class="table table-bordered" style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td v-for="(s,index) in static">
+                                                <div @click="update(index)">
+                                                    <span style="font-size: 20px">{{s.column}}</span><br>
+                                                    <span style="font-size: 30px">{{s.num}}</span><br><br>
+                                                    <span style="font-size: 15px;color:grey">较前一日 {{s.rate_pre1}} <i :class="s.up1" :style="s.color1"></i></span><br>
+                                                    <span style="font-size: 15px;color:grey">较前一周 {{s.rate_pre7}} <i :class="s.up7" :style="s.color7"></i></span><br><br>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12" style="height:450px" id="chart_total"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="op_2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            行业排行
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-4" id="shop_index">
+                                <h3>店铺</h3>
+                                <table style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <td style="width:10%">排名</td>
+                                            <td style="width:70%">店铺</td>
+                                            <td style="width:20%">交易指数</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-for="(s,index) in shop">
+                                        <tr>
+                                            <td>{{index+1}}</td>
+                                            <td><img :src="s.img" style="height: 60px;width:60px" alt="">{{s.name}}</td>
+                                            <td>{{s.index}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-4" id="item_index">
+                                <h3>商品</h3>
+                                <table style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <td style="width:10%">排名</td>
+                                            <td style="width:70%">商品</td>
+                                            <td style="width:20%">交易指数</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-for="(i,index) in item">
+                                        <tr>
+                                            <td>{{index+1}}</td>
+                                            <td><img :src="i.img" style="height: 60px;width:60px" alt="">{{i.name}}</td>
+                                            <td>{{i.index}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-4" id="word_index">
+                                <h3>关键字</h3>
+                                <table style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <td style="width:10%">排名</td>
+                                            <td style="width:70%">关键字</td>
+                                            <td style="width:20%">热度</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-for="(w,index) in word">
+                                        <tr>
+                                            <td>{{index+1}}</td>
+                                            <td style="height:60px">{{w.name}}</td>
+                                            <td>{{w.index}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade in" id="service_window">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            service 1
+                        </div>
+                        <div class="panel-body">
+                            sv_window
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            service 2
+                        </div>
+                        <div class="panel-body">
+                            sv_window
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade in" id="manage_window">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            mn 1
+                        </div>
+                        <div class="panel-body">
+                            mn_window
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            mn 2
+                        </div>
+                        <div class="panel-body">
+                            mn_window
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--robot-->
+    <div id="robot" class="robot1" data-toggle="modal" data-target="#myModal" onclick="robotchange()" style="top:20%"><span
+        class="badge bg-red" id="robot_badge" style="margin-left: 9px; margin-top:9px;"></span>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onclick="document.getElementById('robot').className='robot1'">
+        <div class="modal-dialog">
+            <div class="modal-content" id="mc">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <img src="vendors/images/robot_head.png" style="height: 25px;width: 25px;margin-right:15px">
+                        <!--{{ $t('robot') }}-->
+                        智能机器人为您推荐
+                    </h4>
+                </div>
+    
+                <div class="modalbody">
+                    
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <!--{{ $t('close') }}-->
+                        关闭
+                    </button>
+                    <button type="button" id="selectButton" class="btn btn-primary" data-dismiss="modal"
+                            onclick="usingFilter()">
+                        <!--{{ $t('databoard.filter') }}-->
+                        确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!--/robot-->
+</body>
+
+<script src="vendors/js/jquery/jquery.js"></script>
+<script src="http://momentjs.com/downloads/moment.js" type="text/javascript"></script>
+<script src='vendors/js/robot/robot.js'></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="vendors/bootstrap/js/dropdown.js"></script>
+<script src="vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="vendors/js/echarts.js"></script>
+<script src="vendors/js/vue/vue.js"></script>
+<script>
+    //daterangepicker init
+    $("#datepicker1").datetimepicker({
+        format: "yyyy/mm/dd hh:ii",
+    });
+
+    $("#datepicker2").datetimepicker({
+        format: "yyyy/mm/dd hh:ii",
+    });
+    $("#datepicker2").datetimepicker("setDate", new Date());
+    //charts_in_sycm.js
+    //charts in current status:
+    var chart0 = echarts.init(document.getElementById("chart_currentstatus_left"));
+    chart0.showLoading({
+        text: 'loading...',
+        maskColor: "#f7f7f7"
+    });
+    var option0 = {
+        grid: {
+            top: 30,
+            bottom: 10,
+            left: 0,
+            right: 0,
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            splitLine: false
+        },
+        yAxis: {
+            type: 'value',
+            splitNumber: 2,
+            splitLine: false
+        },
+        legend: {
+            data: ['1', '2'],
+            x: "left"
+        },
+        series: [{
+            name: "1",
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'line'
+        },
+        {
+            name: "2",
+            data: [82, 93, 90, 93, 129, 133, 132],
+            type: 'line'
+        }]
+    };
+    chart0.hideLoading();
+    chart0.setOption(option0);
+    //charts in survey_rank
+    var chart1 = echarts.init(document.getElementById("chart_shopsurvey_rank"))
+    chart1.showLoading({
+        text: 'loading...',
+        maskColor: "#f7f7f7"
+    });
+    var option1 = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            splitLine: false,
+
+        },
+        yAxis: {
+            splitLine: false,
+            show: false
+        },
+        series: [
+            {
+                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                type: 'line'
+            }
+        ]
+    }
+    chart1.hideLoading();
+    chart1.setOption(option1);
+    //charts in survey_progress
+    var chart2 = echarts.init(document.getElementById("chart_shopsurvey_progress"));
+    chart2.setOption({
+        grid: {
+            left: '5%',
+            right: '2%',
+            bottom: '0%',
+            top: "0%",
+            x: 0,
+            y: 0
+
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01],
+            show: false,
+            fontsize: 1
+        },
+        yAxis: {
+            type: 'category',
+            data: ['sales12'],
+            show: false,
+            fontsize: 1
+        },
+        series: [
+            {
+                name: 'completed',
+                type: 'bar',
+                stack: "sales",
+                data: [18203],
+                barWidth: 30,
+                itemStyle: {
+                    barBorderRadius: [5, 0, 0, 5]
+                }
+
+            },
+            {
+                name: 'rest',
+                type: 'bar',
+                stack: "sales",
+                data: [19325],
+                barWidth: 30,
+                itemStyle: {
+                    barBorderRadius: [0, 5, 5, 0]
+                }
+            }
+        ],
+        animation: false,
+    });
+    //chart in chart_total
+    var chart3 = echarts.init(document.getElementById("chart_total"));
+    chart3.setOption({
+
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['邮件营销', '联盟广告', '视频广告']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '邮件营销',
+                type: 'line',
+                stack: '总量',
+                data: [120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+                name: '联盟广告',
+                type: 'line',
+                stack: '总量',
+                data: [220, 182, 191, 234, 290, 330, 310]
+            },
+            {
+                name: '视频广告',
+                type: 'line',
+                stack: '总量',
+                data: [150, 232, 201, 154, 190, 330, 410]
+            },
+        ]
+    })
+
+
+    //ajax_in_sycm.js
+
+    //vue_in_sycm.js
+    //vue of current status
+    new Vue({
+        el: "#headline",
+        data: {
+            currenttime: "2019/4/25"
+        }
+    });
+    new Vue({
+        el: "#card_left",
+        data: {
+            paid: 9999,
+            rank: 9999,
+            ratio: "55%",
+            yeste: 8888,
+        }
+    });
+    new Vue({
+        el: "#status_right",
+        data: {
+            cards: [
+                {
+                    img: 'fa fa-car',
+                    style: "font-size:30px;color:red;",
+                    column: "访客数",
+                    nums: "0",
+                    percent: "0.00%",
+                    rating: "100+",
+                    yesterday: "0"
+                },
+                {
+                    img: 'fa fa-car',
+                    style: "font-size:30px;color:blue;",
+                    column: "支付买家数",
+                    nums: "0",
+                    percent: "0.00%",
+                    rating: "100+",
+                    yesterday: "0"
+                },
+                {
+                    img: 'fa fa-car',
+                    style: "font-size:30px;color:yellow;",
+                    column: "浏览量",
+                    nums: "0",
+                    percent: "0.00%",
+                    rating: "100+",
+                    yesterday: "0"
+                },
+                {
+                    img: 'fa fa-car',
+                    style: "font-size:30px;color:green;",
+                    column: "支付子订单数",
+                    nums: "0",
+                    percent: "0.00%",
+                    rating: "100+",
+                    yesterday: "0"
+                },
+            ]
+        }
+    });
+
+    new Vue({
+        el: "#survey_updatetime",
+        data: {
+            currenttime: "2019/4/26",
+        },
+    });
+    new Vue({
+        el: "#survey_rank",
+        data: {
+            paymentrank: 4396,
+            changement: 777,
+            up: "fa fa-angle-double-up",
+            color: "color:red"
+        },
+    });
+    new Vue({
+        el: "#survey_progress",
+        data: {
+            percentage: "50%",
+            now: 1000,
+            plan: 2000
+        },
+    });
+    //vue in op2
+    new Vue({
+        el: "#shop_index",
+        data: {
+            shop: [
+                {
+                    num: 1,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺1",
+                    index: "100"
+                },
+                {
+                    num: 2,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺2",
+                    index: "99"
+                },
+                {
+                    num: 3,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺3",
+                    index: "98"
+                },
+                {
+                    num: 1,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺4",
+                    index: "97"
+                },
+            ]
+        }
+    });
+    new Vue({
+        el: "#item_index",
+        data: {
+            item: [
+                {
+                    num: 1,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺1",
+                    index: "100"
+                },
+                {
+                    num: 2,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺2",
+                    index: "99"
+                },
+                {
+                    num: 3,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺3",
+                    index: "98"
+                },
+                {
+                    num: 1,
+                    img: "vendors/js/jqfloat/bg.jpg",
+                    name: "店铺4",
+                    index: "97"
+                },
+            ]
+        }
+    });
+    new Vue({
+        el: "#word_index",
+        data: {
+            word: [
+                {
+                    num: 1,
+
+                    name: "店铺1",
+                    index: "100"
+                },
+                {
+                    num: 2,
+
+                    name: "店铺2",
+                    index: "99"
+                },
+                {
+                    num: 3,
+
+                    name: "店铺3",
+                    index: "98"
+                },
+                {
+                    num: 1,
+
+                    name: "店铺4",
+                    index: "97"
+                },
+            ]
+        }
+    })
+    // vue for total_static
+    new Vue({
+        el: "#total_static",
+        data: {
+            static: [
+                {
+                    column: "数据1",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+                {
+                    column: "数据2",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+                {
+                    column: "数据3",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+                {
+                    column: "数据4",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+                {
+                    column: "数据5",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+                {
+                    column: "数据6",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+                {
+                    column: "数据7",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+                {
+                    column: "数据8",
+                    num: 9999,
+                    rate_pre1: "33%",
+                    rate_pre7: "66%",
+                    up1: "fa fa-angle-double-up",
+                    color1: "color:red",
+                    up7: "fa fa-angle-double-down",
+                    color7: "color:green",
+                },
+            ] 
+        },
+        methods: {
+            update(index) {
+                alert(this.static[index].column + " has been clicked")
+            }
+        }
+    })
+</script>
+
+</html>

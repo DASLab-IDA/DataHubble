@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "name": "web_sales_home",
+    "description": "The web sales' data for household",
+    "label": "home",
+    "createdat": "2019-09-25",
+    "updatedat": "2019-09-25",
+    "iscommon": "1"
+  },
+  {
+    "id": "2",
+    "name": "web_sales_books",
+    "description": "The web sales' data for books",
+    "label": "book",
+    "createdat": "2019-09-25",
+    "updatedat": "2019-09-25",
+    "iscommon": "0"
+  }
+]

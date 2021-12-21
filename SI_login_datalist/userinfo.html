@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>商品信息</title>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
+    <!--font Awesome-->
+    <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--gentelella custom-->
+    <link rel="stylesheet" href="vendors/gentelella-master/build/css/custom.min.css">
+</head>
+<body style="background-color: #f7f7f7">
+    <div class="container">
+        <br>
+        <div class="row">
+            <div id="staticloading" style="height:105.233px"><h3>&nbsp;&nbsp;&nbsp;&nbsp;Static Loading...</h3></div>
+            <div class="row tile_count" id="statics" hidden>
+                <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count" v-for="d in static">
+                    <span class="count_top"><i class="fa fa-user"></i> {{d.brand}}</span>
+                    <div class="count">{{d.num}}</div>
+                    <span class="count_bottom" v-if="d.up"><i class="red"><i class="fa fa-sort-asc"></i>{{d.percent}}</i> From {{d.date2}}</span>
+                    <span class="count_bottom" v-else><i class="green"><i class="fa fa-sort-desc"></i>{{d.percent}}</i> From {{d.date2}}</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div id="column" class="col-md-4"style="height:300px;"></div>
+            <div id="column1" class="col-md-4"style="height:300px;"></div>
+            <div id="column2" class="col-md-4"style="height:300px;"></div>
+        </div>
+        <br>
+        <div class="rov">
+            <div class="col-md-12" id="column21" style="height:450px"></div>
+        </div>
+    </div>
+</body>
+
+<script src="vendors/js/jquery/jquery.min.js"></script>
+<script src="vendors/bootstrap/bootstrap.min.js"></script>
+<script src="vendors/js/vue/vue-i18n.min.js"></script>
+<script src="vendors/gentelella-master/build/js/custom.min.js"></script>
+<script src="vendors/js/echarts.js"></script>
+<script src="vendors/js/infocharts.js"></script>
+<script src="vendors/js/vue/vue.js"></script>
+<script>
+    var require=[
+        {
+            "date1":"2009-01-01",
+            "date2":"2005-01-01",
+            "tablename":"websales2005_season1",
+            "column":"quantity",
+            "sumtype":"interval",
+        },
+        {
+            "date1":"2009-01-01",
+            "date2":"2005-01-01",
+            "tablename":"websales2005_season1",
+            "column":"price",
+            "sumtype":"interval",
+        },
+        {
+            "date1":"2005-01-08",
+            "date2":"2005-01-07",
+            "tablename":"websales2005_season1",
+            "column":"quantity",
+            "sumtype":"exact",
+        },
+        {
+            "date1":"2005-01-08",
+            "date2":"2005-01-07",
+            "tablename":"websales2005_season1",
+            "column":"price",
+            "sumtype":"exact",
+        },
+        {
+            "date1":"2005-01-07",
+            "date2":"2005-01-01",
+            "tablename":"websales2005_season1",
+            "column":"quantity",
+            "sumtype":"exact",
+        },
+        {
+            "date1":"2005-01-07",
+            "date2":"2005-01-01",
+            "tablename":"websales2005_season1",
+            "column":"quantity",
+            "sumtype":"interval",
+        },
+    ]
+    var st = [];
+    function pushdata(r){
+        $.ajax({
+            url:"http://10.141.223.30:8083/api/data/getsumbydate",
+            type:"POST",
+            dataType:"json",
+            contentType: "application/json",
+            data:JSON.stringify({"tablename":require[r].tablename,"date":require[r].date1,"column":require[r].column,"sumtype":require[r].sumtype}),
+            success:function(data){
+                var now=data.sum;
+                $.ajax({
+                    url:"http://10.141.223.30:8083/api/data/getsumbydate",
+                    type:"POST",
+                    dataType:"json",
+                    contentType: "application/json",
+                    data:JSON.stringify({"tablename":require[r].tablename,"date":require[r].date2,"column":require[r].column,"sumtype":require[r].sumtype}),
+                    success:function(data){
+                        st.push(
+                            {
+                                "brand":require[r].sumtype=="exact"?require[r].column+" at "+require[r].date1:"Sum of "+require[r].column+" until "+require[r].date1,
+                                "num":require[r].column=="price"?"$"+now.toFixed(2).toString():now.toFixed(0).toString(),
+                                "percent":(Math.abs(now-data.sum)/data.sum*100).toFixed(2).toString()+"%",
+                                "date2":require[r].date2,
+                                "up":now>=data.sum
+                            }
+                        );
+                    }
+                })
+            }
+        })
+    }
+    for(var i=0;i<6;i++)pushdata(i);
+    console.log(Object.keys(require).length);
+    new Vue({
+        el:"#statics",
+        data:{
+            static:st,
+        },
+        updated:function(){
+            if(Object.keys(st).length==6){
+                $("#staticloading").fadeOut();
+                $("#statics").fadeIn();
+
+            }
+        }
+    })
+</script>
+</html>

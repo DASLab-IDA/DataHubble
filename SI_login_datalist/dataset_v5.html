@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>smart interaction</title>
+    <!-- Bootstrap -->
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.css">
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.buttons.css">
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.nonblock.css">
+    <!-- Custom Theme Style -->
+    <link href="vendors/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/css/robot/robot.css">
+    <link href="vendors/css/heart.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/animate.css/animate.css">
+    <link href="vendors/bootstrap-toggle-master/css/bootstrap-toggle.css" rel="stylesheet">
+</head>
+<style>
+    ::-webkit-scrollbar{
+        width:0px;
+        opacity:0;
+        -webkit-overflow-scrolling: touch;
+    }
+</style>
+
+<body class="nav-md">
+<!-- page content -->
+<div class="right_col" role="main" style="min-height: 947px;">
+    <div class="page_content">
+
+
+        <!-- 模态框（Modal） -->
+        <div class=" modal fade" style="width: auto;" id="RobotModal" tabindex="-1" role="dialog"
+             aria-labelledby="RobotModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 600px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            <img src="vendors/images/robot_rec.png" style="height: 25px;width: 25px;margin-right:15px">{{
+                            $t('robot.title') }}
+                        </h4>
+                    </div>
+                    <div class="alert alert-success alert-dismissible fade in" role="alert" style="margin: 10px 5px;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">×</span>
+                        </button>
+                        <!--<strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.-->
+                        {{ $t('dataset.recommendation') }}
+                    </div>
+                    <div class="modal-body" id="rec_list" style="width: 600px;min-height: 250px">
+                        <rec_dataset v-for="(list,index) in rec_lists" :id="index" :name="list.name"
+                                     :description="list.description"
+                                     :label="list.label" :createdat="list.createdAt"
+                                     :updatedat="list.updatedAt"></rec_dataset>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ $t('close') }}</button>
+                        <!--<button type="button" class="btn btn-primary">-->
+                        <!--提交更改-->
+                        <!--</button>-->
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class=" modal fade" id="desModal" tabindex="-1" role="dialog" aria-labelledby="RobotModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title">
+                            {{ $t('details') }}
+                        </h4>
+                    </div>
+                    <div class="modal-body" id="desContent" style="line-height: 50px;height: auto">
+
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="page-title">
+            <div class="title_left language">
+                <h2 style="margin-left: 25px">{{ $t('dataset.dataset') }}</h2>
+            </div>
+
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="查询" id="key"
+                               onkeydown='if(event.keyCode==13){search.click()}'>
+                        <span class="input-group-btn" id="search" onclick="search_list()">
+                            <button type="button" class="btn btn-default" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="row">
+                            <div id="datalist">
+                                <!--<transition-group name="list-complete" tag="div">-->
+                                <dataset v-for="(list,index) in lists"  :id="index"
+                                         :name="list.name"
+                                         :description="list.description" :label="list.label"
+                                         :createdat="list.createdAt" :updatedat="list.updatedAt"></dataset>
+                                <!--</transition-group>-->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<template id="listComponent">
+    <div>
+        <div class="col-xs-12 col-md-4 col-sm-4 col-lg-4 profile_details">
+            <div class="well profile_view">
+                <div class="col-sm-12" style="min-height: 200px">
+                    <div class="left col-xs-7">
+                        <h5>{{name}}</h5>
+                        <!--<p><strong>About: </strong> The web sales' data for household </p>-->
+                        <ul class="list-unstyled" style="line-height: 45px">
+                            <li :id="Lid(id)">{{labels_split(id)}}"</li>
+                            <li><img src="vendors/images/databoard/time.png">{{ $t('dataset.createdTime')
+                                }}:{{createdat}}
+                            </li>
+                            <li><img src="vendors/images/databoard/time.png">{{ $t('dataset.updatedTime')
+                                }}:{{updatedat}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="right col-xs-5 text-center">
+                        <!--<img src="https://source.unsplash.com/300x300/?program,github,daily" alt="" class="img-circle img-responsive" style="height: 100px;width: auto; ">-->
+                        <img :src="imgsrc(id)" alt="" class="img-circle " style="height:9em;width: 9em">
+                    </div>
+                </div>
+                <div class="col-xs-12 bottom text-center">
+                    <div class="col-xs-12 col-sm-4 emphasis">
+                        <p class="ratings">
+                            <!--<a>4.0</a>-->
+                            <a href="#"><span class="fa fa-star" style="font-size: x-small;"></span></a>
+                            <a href="#"><span class="fa fa-star" style="font-size: x-small;"></span></a>
+                            <a href="#"><span class="fa fa-star" style="font-size: x-small;"></span></a>
+                            <a href="#"><span class="fa fa-star" style="font-size: x-small;"></span></a>
+                            <a href="#"><span class="fa fa-star-o" style="font-size: x-small;"></span></a>
+                        </p>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-2 emphasis">
+                        <!--<label @click="common_use(id)">-->
+                            <!--<button :id="Tid(id)" :name="Tname(id)"  @click="common_use(id)" ></button>-->
+                        <!--</label>-->
+                        <div class="heart " :id="Tid(id)" :name="Tname(id)" rel="unlike" onclick="k(this)" ><div class="commuse" :id="Cid(id)" style="width:100px">收藏</div></div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 emphasis">
+                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#desModal"
+                                @click="des(id)">
+                            <!--onclick="des1(id)">-->
+                            <i class="fa fa-book"></i> {{ $t('details') }}
+                        </button>
+                        <button type="button" class="btn btn-primary btn-xs"
+                                @click="use(id)">
+                            <i class="fa fa-area-chart"> </i> {{ $t('dataset.use') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+<template id="rec_listComponent">
+    <div class="col-md-12 col-sm-12 col-xs-12 profile_details">
+        <div class="well profile_view">
+            <div class="col-sm-12">
+                <div class="left col-xs-7">
+                    <h2>{{name}}</h2>
+                    <!--<p><strong>About: </strong> The web sales' data for household </p>-->
+                    <ul class="list-unstyled" style="line-height: 20px">
+                        <li :id="Lid(id)"><img src="vendors/images/databoard/label.png">{{labels_split(id)}}</li>
+                        <li><img src="vendors/images/databoard/time.png">创建时间:{{createdat}}</li>
+                        <li><img src="vendors/images/databoard/time.png">更新时间:{{updatedat}}</li>
+                    </ul>
+                </div>
+                <!--<div class="right col-xs-5 text-center" >-->
+                <!--&lt;!&ndash;<img src="https://source.unsplash.com/300x300/?program,github,daily" alt="" class="img-circle img-responsive" style="height: 100px;width: auto; ">&ndash;&gt;-->
+                <!--<img :src="imgsrc()" alt="" class="img-circle img-responsive" >-->
+                <!--</div>-->
+            </div>
+            <div class="col-xs-12 bottom text-center">
+                <div class="col-xs-12 col-sm-6 emphasis">
+                    <p class="ratings">
+                        <a>4.0</a>
+                        <a href="#"><span class="fa fa-star"></span></a>
+                        <a href="#"><span class="fa fa-star"></span></a>
+                        <a href="#"><span class="fa fa-star"></span></a>
+                        <a href="#"><span class="fa fa-star"></span></a>
+                        <a href="#"><span class="fa fa-star-o"></span></a>
+                    </p>
+                </div>
+                <div class="col-xs-12 col-sm-6 emphasis">
+                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#desModal"
+                            @click="des(id)"> <!--onclick="des2(id)">-->
+
+                        <i class="fa fa-book"></i>详细信息
+                    </button>
+                    <button type="button" class="btn btn-primary btn-xs" @click="use(id)">
+                        <!--@click="use($event.currentTarget.parentElement.parentElement.parentElement)">-->
+                        <i class="fa fa-area-chart"> </i> 使用该数据集
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<script type="text/javascript" src="vendors/js/jquery/2.2.3/jquery.js"></script>
+<script type="text/javascript" src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/search.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/user.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/modal.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/heart.js"></script>
+<!-- PNotify -->
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.js"></script>
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+<!-- Custom Theme Scripts -->
+<!--<script src="vendors/js/custom.min.js"></script>-->
+
+<script type="text/javascript" src="vendors/js/vue/vue.js"></script>
+<script type="text/javascript" src="vendors/js/vue/vue-i18n.min.js"></script>
+<script type="text/javascript" src="vendors/js/language.js"></script>
+<script type="text/javascript" src="vendors/js/jquery/plugin/jquery.cookie.js"></script>
+<script src="vendors/bootstrap-toggle-master/js/bootstrap-toggle.js"></script>
+<script type="text/javascript" src='vendors/js/robot/robot.js'></script>
+<script type="text/javascript" src="vendors/js/vue/vue-cookies.js"></script>
+
+<script>
+    if ($cookies.get('language')) {
+        i18n.locale = $cookies.get('language')
+    }
+    new Vue({
+        el: '#desModal',
+        i18n
+    });
+    var vm1 = new Vue({
+        el: ".page_content",
+        i18n,
+        data: {
+            lists: [],
+            rec_lists: [],
+        },
+        created: function () {
+            console.log("++++++++++vm1 start++++++")
+        },
+        mounted: function () {
+            var self = this;
+            $.ajax({
+                // url: './vendors/json/list.json',
+                url: 'http://10.141.223.30:8083/api/index/list',
+                type: 'get',
+                data: {},
+                dataType: 'json'
+            }).then(function (res) {
+                console.log("aquire list from server", res);
+                //把从json获取的数据赋值给数组
+                self.lists = res;
+            }).fail(function () {
+                console.log('aquire list ajax error');
+            });
+
+            var category = $.cookie('category');
+            var userprofile = JSON.stringify({"label": category});
+            $.ajax({
+                // url: './vendors/json/list.json',
+                url: 'http://10.141.223.30:8083/api/index/recommend',
+                type: 'post',
+                contentType: "application/json",
+                dataType: 'json',
+                data: userprofile,
+            }).then(function (res) {
+                console.log("request rec_datalist from server:", res);
+                self.rec_lists = res.data;
+                var count = res.count;
+                $('#rec_list').css("height", "height:auto");
+                document.getElementById('robot').className = "robot1";
+                $('#robot_badge').append(count);
+                new PNotify({
+                    title: i18n.t('robot.title'),
+                    text: i18n.t('robot.text'),
+                    type: 'info',
+                    styling: 'bootstrap3',
+                    addclass: 'dark',
+                    animation: 'fade fadeinRight',
+                    delay: '3000'
+                });
+            }).fail(function () {
+                console.log('rec ajax error');
+            });
+        },
+
+        updated: function () {
+            this.$nextTick(function () {
+                // $("[name='nocommon']").bootstrapToggle('off');
+                // $("[name='iscommon']").bootstrapToggle('on');
+                // $("[name='nocommon']").addClass("heartAnimation").attr("rel", "unlike");
+                $("[name='iscommon']").addClass("heartAnimation").attr("rel", "like");
+                $("[name='nocommon']").removeClass("heartAnimation").attr("rel", "unlike");
+                $('.right_col').css("height", "height:auto");
+            });
+
+        },
+        methods: {}
+    });
+
+
+    Vue.component('dataset', {
+        props: ['name', 'description', 'label', 'createdat', 'updatedat', 'id'],
+        template: '#listComponent',
+        methods: {
+
+            Tid: function (index) {
+                return "Tid" + index;
+            },
+
+            Cid: function (index) {
+                return "Cid" + index;
+            },
+
+            Lid: function (index) {
+                return "Lid" + index;
+            },
+
+            Tname: function (index) {
+                var data = vm1.$data.lists[index];
+                if (data.iscommon == "1") {
+                    return "iscommon"
+                }
+                else if (data.iscommon == "0") {
+                    return "nocommon"
+                }
+            },
+
+            common_use(index) {
+                if ($("#Tid" + index).className === false) {
+                    var data = vm1.$data.lists[index];
+                    var set = {
+                        tablename: data.tablename,
+                        "iscommon": "true"
+                    };
+                    var update = JSON.stringify(set);
+                    $.ajax({
+                        // url: './vendors/json/list.json',
+                        url: 'http://10.141.223.30:8083/api/index/update',
+                        type: 'post',
+                        data: update,
+                        dataType: "json",
+                        contentType: "application/json"
+                    });
+                    vm1.$data.lists[index].iscommon = "true";
+                    vm1.$data.lists.splice(0, 0, vm1.$data.lists[index]);
+                    vm1.$data.lists.splice(index + 1, 1);
+                }
+
+                else if ($("#Tid" + index).prop('checked') === true) {
+                    var data = vm1.$data.lists[index];
+                    var set = {
+                        tablename: data.tablename,
+                        "iscommon": "false"
+                    };
+                    var update = JSON.stringify(set);
+                    $.ajax({
+                        // url: './vendors/json/list.json',
+                        url: 'http://10.141.223.30:8083/api/index/update',
+                        type: 'post',
+                        data: update,
+                        dataType: "json",
+                        contentType: "application/json"
+                    });
+                    vm1.$data.lists[index].iscommon = "false";
+                    var len = vm1.$data.lists.length;
+                    vm1.$data.lists.splice(len, 0, vm1.$data.lists[index]);
+                    vm1.$data.lists.splice(index, 1);
+                }
+            },
+
+            labels_split: function (index) {
+                var labels = vm1.$data.lists[index].label.split("&");
+                // console.log(labels[0]);
+                var str = '';
+                str += "<img src=\"vendors/images/databoard/label.png\">";
+                this.$nextTick(function () {
+                    for (i = 0; i < labels.length; i++) {
+                        str += "<span class=\"label label-info\" style='margin-left: 5px' >" + labels[i] + "</span>";
+                    }
+                    // console.log("str=" + str);
+                    $("#Lid" + index).empty();
+                    // console.log($("#Lid" + index));
+                    $("#Lid" + index).html(str);
+
+                });
+
+            },
+
+            imgsrc: function (index) {
+                // var dataset_category = vm1.$data.lists[index].tablename.slice(10);
+                var imgset=["movies","music","sports","tools","toys"]
+                var dataset_category =imgset[Math.floor(Math.random() * Math.floor(4))]
+                return "vendors/images/datalog/" + dataset_category + ".svg"
+            },
+
+            des: function (index) {
+                var data = vm1.$data.lists[index];
+                vm1.$nextTick(function () {
+                    modal(data, index);
+                })
+            },
+
+            use: function (index) {
+                console.log(index);
+                // table = element.getElementsByTagName('h2')[0].innerHTML;
+                table = vm1.$data.lists[index].tablename;
+                console.log(table);
+                var url = './databoard.html' + '?tableName=' + table;
+                window.location.href = url;
+            }
+        }
+
+    });
+
+    Vue.component('rec_dataset', {
+        props: ['name', 'description', 'label', 'createdat', 'updatedat', 'id'],
+        template: '#rec_listComponent',
+        methods: {
+            Lid: function (index) {
+                return "rec_Lid" + index;
+            },
+
+            labels_split: function (index) {
+                var labels = vm1.$data.rec_lists[index].label.split("&");
+                // console.log(labels[0]);
+                var str = '';
+                str += "<img src=\"vendors/images/databoard/label.png\">";
+                this.$nextTick(function () {
+                    for (i = 0; i < labels.length; i++) {
+                        str += "<span class=\"label label-info\" style='margin-left: 5px' >" + labels[i] + "</span>";
+                    }
+                    $("#rec_Lid" + index).empty();
+                    $("#rec_Lid" + index).html(str);
+                });
+            },
+
+            des: function (index) {
+                console.log(index);
+                var data = vm1.$data.rec_lists[index];
+                vm1.$nextTick(function () {
+                    modal(data, index);
+                })
+            },
+
+            use: function (index) {
+                console.log(index);
+                table = vm1.$data.rec_lists[index].tablename;
+                console.log(table);
+                var url = './databoard.html' + '?tableName=' + table;
+                window.location.href = url;
+            }
+        }
+
+    });
+
+
+</script>
+
+</div>
+</body>
+</html>

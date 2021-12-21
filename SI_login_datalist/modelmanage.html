@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
+    <script src="vendors/js/jquery/2.2.3/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="vendors/bootstrap/bootstrap.min.js"></script>
+    <script src="vendors/js/vue/vue.js"></script>
+    <style>
+        body {
+            padding: 3%
+        }
+        iframe {
+            width:100%;
+            height:750px
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="panel panel-default" id='modelmanage'>
+            <div class="panel-heading" >
+                <span>模板管理</span>
+                
+                <a href="javascript:void(0)" @click='CreateModel()' style="float: right">新建模板</a>
+            </div>
+            <div class="panel-body">
+                <div v-for="(m,index) in Model" class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <a :href="'#collapse'+index" data-toggle="collapse" data-parent='#accordion'>
+                                    模板ID：{{m.flow_id}}， 创建时间：{{m.createtime}}， 更新时间：{{m.updatetime}}
+                                </a>
+
+                                <a href="javascript:void(0)" @click='modifyModel(index)' style="float: right">修改</a>
+                            </div>
+                        </div>
+                        <div :id="'collapse'+index" class="panel-collapse collapse">
+                            <div style="overflow:hidden;width:100%;height:600px;">
+                                <div style="overflow:hidden;margin-left: -180px;margin-top: -80px;margin-right:-320px">
+                                    <iframe :id="'red-frame'+index" :src="'http://10.141.223.30:1880/jid/'+m.flow_id" frameborder="0"></iframe><br>
+                                </div>     
+                            </div>
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var modelmanage = new Vue({
+        el: '#modelmanage',
+        data: {
+            Model:[
+
+            ],
+        },
+        methods:{
+            CreateModel: function() {
+                $.ajax({
+                url: 'http://10.141.223.30:1880/url/generate',
+                method: 'POST',
+                dataType:"json",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    "userId": 1,
+                    "tables":[],
+                    "portal_jid":"4"
+                }),
+                success: function(data) {
+                    window.location.href = `http://10.141.223.30:1880/jid/${data}`;
+                }
+            });
+            },
+            deleteModel: function(index){
+                //ajax
+                this.Model.splice(index,1);
+            },
+            modifyModel: function(index){
+                window.location.href = `http://10.141.223.30:1880/jid/${this.Model[index].flow_id}`
+            }
+        },
+        mounted() {
+            let that = this;
+            $.ajax({
+                url: 'http://10.141.223.30:8083/api/data/getsavedtemplates',
+                method: 'POST',
+                dataType:"json",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'user_id': 19
+                }),
+                success: function(data) {
+                    that.Model = data;
+                }
+                
+            });
+            
+        }
+    });
+</script>
+</html>

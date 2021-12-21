@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>smartinteract</artifactId>
+        <groupId>com.daslab</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>smartinteract-lib</artifactId>
+    <packaging>jar</packaging>
+
+    <name>smartinteract-lib</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>upload-3rd-lib-to-cluster155</id>
+            <properties>
+                <cluster1.host>10.141.223.12</cluster1.host>
+                <cluster2.host>10.141.223.13</cluster2.host>
+                <cluster3.host>10.141.223.14</cluster3.host>
+                <cluster4.host>10.141.223.15</cluster4.host>
+            </properties>
+            <dependencies>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <outputDirectory>${project.basedir}/target</outputDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>2.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>upload-to-driver</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>upload-single</goal>
+                                </goals>
+                                <configuration>
+                                    <fromFile>${project.basedir}/target/${project.artifactId}-jar-with-dependencies.jar</fromFile>
+                                    <url>scp://${server.user}@${server.host}${server.lib.path}</url>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>distribute-to-cluster</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>sshexec</goal>
+                                </goals>
+                                <configuration>
+                                    <url>scp://${server.user}@${server.host}</url>
+                                    <commands>
+                                        <command>scp ${server.lib.path}/${project.artifactId}-jar-with-dependencies.jar ${server.user}@${cluster1.host}:${server.lib.path}</command>
+                                        <command>scp ${server.lib.path}/${project.artifactId}-jar-with-dependencies.jar ${server.user}@${cluster2.host}:${server.lib.path}</command>
+                                        <command>scp ${server.lib.path}/${project.artifactId}-jar-with-dependencies.jar ${server.user}@${cluster3.host}:${server.lib.path}</command>
+                                        <command>scp ${server.lib.path}/${project.artifactId}-jar-with-dependencies.jar ${server.user}@${cluster4.host}:${server.lib.path}</command>
+                                    </commands>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

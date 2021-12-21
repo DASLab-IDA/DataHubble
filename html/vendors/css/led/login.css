@@ -1,0 +1,113 @@
+/* CSS Document */
+body {
+	font-family:"Microsoft Yahei", Tahoma, Arial, Helvetica, STHeiti;
+	font-size:12px;
+	background:#ddd;
+}
+.logos {
+	padding:0 5px;
+}
+#login-content {
+	width:100%;
+	height:100%;
+	background:url(../../images/led/reg-glow.png) no-repeat center center;
+	top:0;
+	left:0;
+	_display:none;
+}
+.login-wrapper {
+	width:550px;
+	margin-top: -90px;
+	top: 50%;
+	left:50%;
+	margin-left:-275px;
+}
+.sub-title {
+	margin-top:22px;
+}
+
+.logos {
+	height:43px;
+}
+.reg-action {
+	padding-top:20px;
+}
+.reg-item {
+	width:194px;
+	padding:4px;
+	background:url(../../images/led/reg-v2-input-sprites.png) no-repeat 0px 0px;
+	margin-right:8px;
+	_margin-right:7px;
+	height:34px;
+	_height:32px;
+}
+.focus {
+	background-position:0px -42px
+}
+.reg-input {
+	background:none transparent scroll repeat 0% 0%;
+	line-height:34px;
+	_line-height:32px;
+	height:34px;
+	_height:32px;
+	font-size:18px;
+	border:medium none;
+	z-index:200;
+	width:194px;
+}
+.reg-label {
+	color:#bababa;
+	font-size:18px;
+	top:8px;
+	left:8px;
+	_top:10px;
+	z-index:100;
+	font-size:18px;
+}
+.focus .reg-label {
+	visibility:hidden;
+}
+.btn-submit {
+	border: medium none;
+	width: 130px;
+	background:url(../../images/led/login-v2-submit.png) no-repeat 0px 0px;
+	height: 40px;
+}
+.btn-submit:hover {
+	background-position:0 -40px
+}
+.reg-tip {
+	line-height:22px;
+	padding:4px 8px;
+	left:2px;
+	width:182px;
+	background:#6c8293;
+	color:#fff;
+	top:44px;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	border-radius:2px;
+	visibility:hidden;
+}
+.error {
+	background-position:0 -84px;
+}
+.error .reg-tip {
+	visibility:visible;
+}
+.login-misc {
+	width:550px;
+	color:#324f65;
+	padding-left:5px;
+}
+.remember em {
+	color:#999;
+}
+.master{ position:absolute; border:#cd8124 1px solid; background:#ffebb3; width:100%; left:0; top:3px; font-size:14px; color:#000; display:none;}
+.master p{ padding:10px 50px 10px 30px;}
+.m-close{ position:absolute; background:#FFF; border:#5bb8ff 1px solid; padding:0 2px; color:#4b8fcf; cursor:pointer; padding-top:2px;display:none;}
+.m-close-short{right:5px; top:18px;}
+.m-close-long{ right: 40px; top:18px;}
+.btn-master{ background:url(../../images/led/login-v2-load.png) no-repeat 0 0; width:130px; height:40px; left:0; top:0; visibility:hidden;}
+.btn-master .loading{ background:url(../../images/led/loader-small.gif) no-repeat 50% 50%; height:40px; width:20px; margin-left:98px;}
+.visibility{visibility:visible;}

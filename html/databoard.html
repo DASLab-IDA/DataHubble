@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>smart-interaction </title>
+
+    <link rel="stylesheet" href="vendors/css/robot/robot.css">
+    <link rel="stylesheet" href="vendors/css/style.css">
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" type="text/css"-->
+    <!--href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css">-->
+    <!--<link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">-->
+
+
+    <link rel="stylesheet" href="vendors/css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/ionRangeSlider/ion.rangeSlider.css"/>
+    <link rel="stylesheet" href="vendors/ionRangeSlider/ion.rangeSlider.skinFlat.css"/>
+    <link rel="stylesheet" href="vendors/ionRangeSlider/normalize.css"/>
+    <link href="vendors/css/gentelella/fullcalendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/css/jquery.horizontal.scroll.css"/>
+    <link href="vendors/css/gentelella/custom.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+    <!-- Datatables -->
+    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"></script>
+    <script src="vendors/js/jquery.smartWizard.js" type="text/javascript"></script>
+    <script src="vendors/js/jquery.horizontal.scroll.js" type="text/javascript"></script>
+    <script src="http://momentjs.com/downloads/moment.js" type="text/javascript"></script>
+
+
+</head>
+
+<body>
+
+
+
+<div class="page_content">
+    <div id="canvas">
+
+        <div id="tableInfo">
+            <div id="name">
+                <img src="vendors/images/databoard/db.png"/>
+            </div>
+            <div id="foldButton1" class="fa fa-chevron-up" onclick="foldTableInfo()"></div>
+            <div id="label">
+                <img src="vendors/images/databoard/label.png"/>
+            </div>
+            <div id="createdAt">
+                <img src="vendors/images/databoard/time.png"/>
+                <!--{{ $t('databoard.createdAt') }}-->
+                创建于
+            </div>
+            <div id="updatedAt">
+                <img src="vendors/images/databoard/time.png"/>
+                <!--{{ $t('databoard.updatedAt') }}-->
+                更新于
+            </div>
+			<br>
+            <div id="searchbutton" class="fa fa-search fa-2x" onclick="searchswitch()"></div>
+          
+            <div id="description">
+                <img src="vendors/images/databoard/description.png"/>
+            </div>
+        </div>
+
+        <div class="dividingLine" id="dividingLine01"></div>
+
+<!--搜索框相关内容 2019.03.27-->
+<div style="background-color:rgb(235,235,235);padding: 15px" id="searchbox" hidden>
+    <div id="loadingtext">loading...</div>
+    <div class="row" style="width:80%" id="searchbar" hidden></div>
+</div>  
+<!--搜索框相关内容结束-->
+      
+        <div id="dataBoard" style="margin-top: 15px;">
+            <div id="foldButton2" class="fa fa-chevron-up" onclick="foldDataBoard()"></div>
+            <table id="datatable-fixed-header" class="table table-striped table-bordered" style="width:95%;">
+                <thead>
+                <tr id ='tr'>
+
+                </tr>
+                </thead>
+            </table>
+            <div id="waitingtext" style="font-size: 24px;    text-align: center;    margin-top: 27px;">分析历史加载中...
+            </div>
+            <div id="pagechart" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="mc">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    <img src="vendors/images/robot_head.png" style="height: 25px;width: 25px;margin-right:15px">
+                    <!--{{ $t('robot') }}-->
+                    智能机器人为您推荐
+                </h4>
+            </div>
+
+            <div class="modalbody">
+                <div class="x_content" style="display:none">
+                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                            <li role="presentation" class="active"
+                                onclick="buttonflag=0;$('#selectButton')[0].innerHTML ='应用过滤';"><a href="#tab_content1"
+                                                                                                   id="tab1" role="tab"
+                                                                                                   data-toggle="tab"
+                                                                                                   aria-expanded="false">过滤条件推荐</a>
+                            </li>
+                            <li role="presentation" class="" style="display:none"
+                                onclick="buttonflag=1;$('#selectButton')[0].innerHTML ='选择数据';"><a href="#tab_content2"
+                                                                                                   role="tab"
+                                                                                                   id="tab2"
+                                                                                                   data-toggle="tab"
+                                                                                                   aria-expanded="true">可视化推荐</a>
+                            </li>
+                            <li role="presentation" class="" style="display:none"
+                                onclick="buttonflag=2;$('#selectButton')[0].innerHTML ='开始分析';"><a href="#tab_content3"
+                                                                                                   role="tab"
+                                                                                                   id="tab3"
+                                                                                                   data-toggle="tab"
+                                                                                                   aria-expanded="false">分析方法推荐</a>
+                            </li>
+                            <li role="presentation" class="" style="display:none"
+                                onclick="buttonflag=3;$('#selectButton')[0].innerHTML ='进入分析应用';"><a
+                                    href="#tab_content4"
+                                    role="tab"
+                                    id="tab4"
+                                    data-toggle="tab"
+                                    aria-expanded="false">分析途径</a>
+                            </li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
+                                 aria-labelledby="home-tab">
+                                <div class="alert alert-success alert-dismissible fade in" role="alert"
+                                     style="margin: -5px 5px;max-height: 46px;">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                            aria-hidden="true">×</span>
+                                    </button>
+                                    <!--<strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.-->
+                                    <!--{{ $t('databoard.recommendation')}}-->
+                                    以下是各列的数据分布和为您推荐的过滤条件
+                                </div>
+
+                                <div class="alert alert-success alert-dismissible fade in" role="alert"style="margin: 5px 5px;min-height: 105px;">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                            aria-hidden="true">×</span>
+
+                                    </button>
+                                    <!--<strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.-->
+                                    <!--{{ $t('databoard.recommendation')}}-->
+                                    这些区间的数据您也许感兴趣：</br>
+                                    <!--<columnname> price </columnname> <filter style="left: 120px;position: absolute;">推荐理由：检测到区间 rf 内出现数值异常，该区间均值为   。建议结合其他维度进行分析。</filter> <result  style="left:300px;position: absolute;"></result></br>-->
+                                    <!--<columnname> solddate </columnname> <filter style="left: 120px;position: absolute;">推荐理由：近期数据时效性高，具有分析价值。根据您的数据集时间跨度，为您推荐 </br>[2004-09-13，2005-12-13] 之间的数据 </filter><result style="left:300px; position: absolute;"></result></br>-->
+
+                                </div>
+                                <div class="col-xs-3">
+                                    <div id="chartsBox">
+                                        <ul id="horiz_container_outer">
+                                            <li id="horiz_container_inner">
+                                                <ul id="horiz_container"
+                                                    style="height: fit-content;background: #F5F7FA">
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                        <!--<div id="scrollbar">-->
+                                        <!--<a id="left_scroll" class="mouseover_left" href="#"></a>-->
+                                        <!--<div id="track">-->
+                                        <!--<div id="dragBar"></div>-->
+                                        <!--</div>-->
+                                        <!--<a id="right_scroll" class="mouseover_right" href="#"></a>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="col-xs-9">
+                                    <ul id="columnTabs" class="nav nav-tabs"></ul>
+                                    <!--<div id="tab1_instructuion" style="position:absolute;padding:9px 12px 12px 12px;"></div><br/><br/>-->
+                                    <!-- Tab panes -->
+                                    <div id="bigChart" class="tab-content">
+                                        <div id="filterBar"></div>
+                                        <div id="chartPad"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                <div class="alert alert-success alert-dismissible fade in" role="alert"
+                                     style="margin: -5px 5px;">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                            aria-hidden="true">×</span>
+                                    </button>
+                                    <!--<strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.-->
+                                    <!--{{ $t('databoard.recommendation')}}-->
+                                    以下是为您推荐的数据组合， 点击以选择您感兴趣的图表继续分析
+                                </div>
+                                <div id="visrecpage"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                <div class="alert alert-success alert-dismissible fade in" role="alert"
+                                     style="margin: -5px 5px;">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                            aria-hidden="true">×</span>
+                                    </button>
+                                    <!--<strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.-->
+                                    <!--{{ $t('databoard.recommendation')}}-->
+                                    以下是为您推荐的分析流程和方法
+                                </div>
+                                <div id="methodpage"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
+                                <div class="alert alert-success alert-dismissible fade in" role="alert"
+                                     style="margin: -5px 5px;">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                            aria-hidden="true">×</span>
+                                    </button>
+                                    <!--<strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.-->
+                                    <!--{{ $t('databoard.recommendation')}}-->
+                                    您创建的分析途径如下。点击下方button进入大数据分析应用。
+                                </div>
+                                <div align="center"><img src="vendors/images/bigdata.png" width="90%" height="auto"
+                                                         id="bigdata"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="left-bar">
+                <div class="history">
+                    <div class="history-date">
+                        <ul id="history-ul">
+                            <h2 class="first">
+                                <li style="max-width:35px;font-size:18px;right: -24px;position:absolute;margin-top:-11px;"
+                                    id="historytitle">
+                                    分析历史
+                                </li>
+                            </h2>
+
+                            <!--<li>-->
+                            <!--<h3>09:10</h3>-->
+                            <!--<dl>-->
+                            <!--<dt>可视化推荐</dt>-->
+                            <!--</dl>-->
+                            <!--</li>-->
+                        </ul>
+                        <li
+                            style="position: absolute;    bottom: 10px;    right: 29px;    font-size: 20px;">更多历史
+                        </li>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <!--{{ $t('close') }}-->
+                    关闭
+                </button>
+                <button type="button" id="selectButton" class="btn btn-primary" data-dismiss="modal"
+                        onclick="usingFilter()">
+                    <!--{{ $t('databoard.filter') }}-->
+                    确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+
+<script type="text/javascript">
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#horiz_container_outer').horizontalScroll();
+    });
+
+</script>
+
+<!--<script type="text/javascript" src="vendors/js/jquery/2.2.3/jquery.js"></script>-->
+<script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src='vendors/js/robot/robot.js'></script>
+<script src='vendors/js/databoard/tableInfo.js'></script>
+<script src='vendors/js/databoard/fold.js'></script>
+<script src="vendors/ionRangeSlider/ion.rangeSlider.js"></script>
+<script src="vendors/js/echarts.js"></script>
+<script src='vendors/js/databoard/wordcloud.js'></script>
+<!--<script type="text/javascript" language="javascript"-->
+<!--src="http://cdn.datatables.net/1.10-dev/js/jquery.dataTables.min.js"></script>-->
+<!--<script type="text/javascript" language="javascript"-->
+<!--src="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>-->
+<!-- Datatables -->
+<script src="vendors/datatables.net/js/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!--<script type="text/javascript" src="vendors/js/vue/vue.js"></script>-->
+<script type="text/javascript" src="vendors/js/vue/vue-i18n.min.js"></script>
+<!--<script type="text/javascript" src="vendors/js/language.js"></script>-->
+<script src='vendors/js/databoard/filterFunctions.js'></script>
+<!--<script src='vendors/js/databoard/dataTable.js'></script>-->
+<!--<script src='vendors/js/databoard/chart.js'></script>-->
+  
+<script src="vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="vendors/js/databoard/search.js"></script>
+<!--<script src='vendors/js/databoard/filterDist.js'></script>-->
+<!--<script>-->
+<!--&lt;!&ndash;console.log(i18n)&ndash;&gt;-->
+<!--new Vue({-->
+<!--el: '.page_content',-->
+<!--i18n-->
+<!--})-->
+<!--</script>-->
+<script type="text/javascript">
+    $(function () {
+        systole();
+    });
+
+    function systole() {
+        if (!$(".history").length) {
+            return;
+        }
+        var $warpEle = $(".history-date"),
+            $targetA = $warpEle.find("h2 a,ul li dl dt a"),
+            parentH,
+            eleTop = [];
+
+        parentH = $warpEle.parent().height();
+        $warpEle.parent().css({"height": 100});
+
+        setTimeout(function () {
+
+
+            $(".left-bar").hover(function () {
+                var t = document.getElementById("historytitle").style;
+                t.maxWidth = "80px";
+                t.right = "13px";
+                t.top = "17px";
+                t.fontSize = "20px";
+                t.background = "white";
+
+                $(this).stop(true, false);
+                $(this).animate({right: -200, height: 768});
+                <!--$(".first")[0].children[0].animate({right:'15px'})-->
+                $(".history-date").find("ul").children(":not('h2:first')").each(function (idx) {
+                    eleTop.push($(this).position().top);
+                    $(this).css({"margin-top": -eleTop[idx]}).children().hide();
+                }).animate({"margin-top": 0}, 500).children().fadeIn();
+                $(".history-date").parent().animate({height: '100%'}, 200);
+            }, function () {
+                var t = document.getElementById("historytitle").style;
+                t.maxWidth = "35px";
+                t.right = "-24px";
+                t.top = "0px";
+                t.fontSize = "18px";
+
+                $(this).animate({right: -30, height: 100});
+            });
+
+
+            $warpEle.find("ul").children(":not('h2:first')").addClass("bounceInDown").css({
+                "-webkit-animation-duration": "1s",
+                "-webkit-animation-delay": "0",
+                "-webkit-animation-timing-function": "ease",
+                "-webkit-animation-fill-mode": "both"
+            }).end().children("h2").css({"position": "relative"});
+
+        }, 600);
+
+        $targetA.click(function () {
+            $(this).parent().css({"position": "relative"});
+            $(this).parent().siblings().slideToggle();
+            $warpEle.parent().removeAttr("style");
+            return false;
+        });
+    }
+
+  //--搜索部分js代码03.21--
+	function searchswitch(){
+        $("#searchbox").toggle();
+    }
+</script>
+
+</html>
+<!--<div class="modal-body" style="min-height: 700px">-->
+<!--</div>-->

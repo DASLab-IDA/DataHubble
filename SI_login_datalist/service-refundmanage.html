@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>商品信息</title>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
+    <!--font Awesome-->
+    <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--gentelella custom-->
+    <link rel="stylesheet" href="vendors/gentelella-master/build/css/custom.min.css">
+
+</head>
+<body style="background-color: #f7f7f7">
+    <div class="container">    
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li>客户服务</li>
+                    <li><a href="service-refundmanage.html">退款管理</a></li>
+                </ul>
+                <br>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>收件人名称：<input type="text" style="width:150px"></th>
+                            <th>买家昵称：<input type="text" style="width:150px"></th>
+                            <th>创建时间：<input type="text" style="width:60px"> 至 <input type="text" style="width:60px"></th>
+                            <th>订单编号：<input type="text" style="width:150px"></th>
+                        </tr>
+                        <tr>
+                            <th>买家选择：<select name="" id=""><option value="all">全部</option></select></th>
+                            <th>订单类型：<select name="" id=""><option value="all">全部</option></select></th>
+                            <th>订单来源：<select name="" id=""><option value="all">全部</option></select> <button>搜索</button></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#allrefund" data-toggle="tab">全部订单</a></li>
+                    <li><a href="#notdelive" data-toggle="tab">仅退款(未发货)</a></li>
+                    <li><a href="#delivedrefundonly" data-toggle="tab">仅退款(已发货)</a></li>
+                    <li><a href="#delived" data-toggle="tab">退货退款</a></li>
+                    <li><a href="#repair" data-toggle="tab">维修</a></li>
+                    <li><a href="#change" data-toggle="tab">换货</a></li>
+                    <li><a href="#sendduplicate" data-toggle="tab">补寄</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="allrefund">
+                        allll
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="vendors/js/jquery/jquery.min.js"></script>
+<script src="vendors/bootstrap/bootstrap.min.js"></script>
+<script src="vendors/js/vue/vue-i18n.min.js"></script>
+<script src="vendors/gentelella-master/build/js/custom.min.js"></script>
+<script></script>
+</html>

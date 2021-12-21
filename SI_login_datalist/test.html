@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>smart-interaction </title>
+
+    <link rel="stylesheet" href="vendors/css/robot/robot.css">
+    <link rel="stylesheet" href="vendors/css/style.css">
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" type="text/css"-->
+    <!--href="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.css">-->
+    <!--<link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">-->
+
+
+    <link rel="stylesheet" href="vendors/css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/ionRangeSlider/ion.rangeSlider.css"/>
+    <link rel="stylesheet" href="vendors/ionRangeSlider/ion.rangeSlider.skinFlat.css"/>
+    <link rel="stylesheet" href="vendors/ionRangeSlider/normalize.css"/>
+    <link href="vendors/css/gentelella/fullcalendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/css/jquery.horizontal.scroll.css"/>
+    <link href="vendors/css/gentelella/custom.min.css" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"></script>
+    <script src="vendors/js/jquery.smartWizard.js" type="text/javascript"></script>
+    <script src="vendors/js/jquery.horizontal.scroll.js" type="text/javascript"></script>
+    <script src="http://momentjs.com/downloads/moment.js" type="text/javascript"></script>
+
+
+</head>
+
+<body>
+
+
+    <div id="result" style="width:500px;height:500px;"></div>
+
+</body>
+
+<script type="text/javascript">
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#horiz_container_outer').horizontalScroll();
+    });
+
+</script>
+
+<!--<script type="text/javascript" src="vendors/js/jquery/2.2.3/jquery.js"></script>-->
+<script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="vendors/ionRangeSlider/ion.rangeSlider.js"></script>
+<script src="vendors/js/echarts.js"></script>
+<script src='vendors/js/databoard/wordcloud.js'></script>
+<!--<script type="text/javascript" language="javascript"-->
+<!--src="http://cdn.datatables.net/1.10-dev/js/jquery.dataTables.min.js"></script>-->
+<!--<script type="text/javascript" language="javascript"-->
+<!--src="http://cdn.datatables.net/plug-ins/28e7751dbec/integration/bootstrap/3/dataTables.bootstrap.js"></script>-->
+<!-- Datatables -->
+<script src="vendors/datatables.net/js/jquery.dataTables.js"></script>
+<script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!--<script type="text/javascript" src="vendors/js/vue/vue.js"></script>-->
+<script type="text/javascript" src="vendors/js/vue/vue-i18n.min.js"></script>
+<!--<script type="text/javascript" src="vendors/js/language.js"></script>-->
+<!--<script>-->
+<!--&lt;!&ndash;console.log(i18n)&ndash;&gt;-->
+<!--new Vue({-->
+<!--el: '.page_content',-->
+<!--i18n-->
+<!--})-->
+<!--</script>-->
+<script type="text/javascript">
+x_date=['2016-8-06','2016-8-07','2016-8-08','2016-8-09','2016-8-11','2016-8-12','2016-8-13'];
+y_value=[111,113,115,132,153,153,132];
+    bopt = {
+                                            title: {
+                                                x: 'center',
+                                                y: 'bottom',
+                                                text: '销量预测',
+                                                textStyle: {
+                                                    fontSize: 18
+                                                }
+                                            },
+                                            tooltip: {
+                                                        trigger: 'axis',
+                                                        axisPointer: {
+                                                            type: 'cross'
+                                                        },
+                                            },
+                                            xAxis: {
+                                                data: x_date,
+                                                show: true,
+                                            },
+                                            yAxis: {
+                                                show: true
+                                            },
+                                            series: [{
+                                                name:'??',
+                                                type: 'line',
+                                                data: y_value,
+                                                itemStyle:{
+                                                    normal:{
+                                                        color:'#40E0D0'
+                                                        <!--function(x_date){-->
+                                                            <!--arr=[];-->
+                                                            <!--for(i=0;i<x_date.length;i++){-->
+                                                                <!--if(x_date<'2016-8-10'){-->
+                                                                    <!--arr.push('#FF6A6A');-->
+                                                                <!--}else{-->
+                                                                <!--arr.push('#40E0D0');-->
+                                                                <!--}-->
+                                                            <!--}-->
+                                                            <!--return arr;-->
+                                                        <!--}-->
+                                                    }
+                                                }
+                                            }],
+                                            toolbox: {
+                                                show: true,
+                                                feature: {
+                                                    magicType: {
+                                                        type: ['line', 'bar'],
+                                                        show: true
+                                                    }
+                                                }
+                                            },
+                                            grid: {
+                                                top: '10%',
+                                                left: '10%',
+                                                right: '3%',
+                                                bottom: '10%',
+                                                containLabel: true
+                                            },
+                                            legend:{
+                                                show:true,
+                                            }
+                                    };//boption
+                                    div = document.getElementById('result');
+                                    myChart = echarts.init(div)
+                                    myChart.setOption(bopt);
+                                    window.onresize = myChart.resize;
+
+
+</script>
+</html>
+<!--<div class="modal-body" style="min-height: 700px">-->
+<!--</div>-->

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>商品信息</title>
+    <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        商家信息
+                    </div>
+                    <div class="panel-body">
+                        内容
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">交易管理</div>
+                    <div class="panel-body">
+                        <ul class="breadcrumb">
+                            <li><a href="#">交易管理</a></li>
+                            <li><a href="#">已卖出的宝贝</a></li>
+                        </ul>
+                        <ul id="" class="nav nav-tabs">
+                            <li class="active"><a href="#recentdeal" data-toggle="tab">近三个月订单</a></li>
+                            <li><a href="#waitforpay" data-toggle="tab">等待买家付款</a></li>
+                            <li><a href="#waitfordelive" data-toggle="tab">等待发货</a></li>
+                            <li><a href="#delivered" data-toggle="tab">已发货</a></li>
+                            <li><a href="#refunding" data-toggle="tab">退款中</a></li>
+                            <li><a href="#waitforrating" data-toggle="tab">需要评价</a></li>
+                            <li><a href="#success" data-toggle="tab">成功的订单</a></li>
+                            <li><a href="#closed" data-toggle="tab">关闭的订单</a></li>
+                            <li><a href="#history" data-toggle="tab">三个月前订单</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="recentdeal">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td>宝贝</td>
+                                            <td>单价</td>
+                                            <td>数量</td>
+                                            <td>售后</td>
+                                            <td>买家</td>
+                                            <td>交易状态</td>
+                                            <td>实收款</td>
+                                            <td>评价</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="checkbox"><label for=""><input type="checkbox">订单号{{dealID}}  创建时间{{CreateTime}}</label></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>2</td>
+                                            <td>3</td>
+                                            <td>4</td>
+                                            <td>5</td>
+                                            <td>6</td>
+                                            <td>7</td>
+                                            <td>8</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="waitforpay">waitfordelive</div>
+                            <div class="tab-pane fade" id="delivered">delivered</div>
+                            <div class="tab-pane fade" id=""></div>
+                            <div class="tab-pane fade" id=""></div>
+                            <div class="tab-pane fade" id=""></div>
+                            <div class="tab-pane fade" id=""></div>
+                            <div class="tab-pane fade" id=""></div>
+                            <div class="tab-pane fade" id=""></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">物流管理</div>
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li class='active'><a href="#senditem" data-toggle="tab">发货</a></li>
+                            <li><a href="#logistictools" data-toggle="tab">物流工具</a></li>
+                            <li><a href="#logisticservice" data-toggle="tab">物流服务</a></li>
+                            <li><a href="#iwantexpress" data-toggle="tab">我要寄快递</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="senditem">
+                                <br>
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#waiting" data-toggle="tab">等待发货的订单</a></li>
+                                    <li><a href="#processing" data-toggle="tab">发货中的订单</a></li>
+                                    <li><a href="#hasdone" data-toggle="tab">已发货的订单</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="waiting">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th>收件人名称：<input type="text" style="width:150px"></th>
+                                                    <th>买家昵称：<input type="text" style="width:150px"></th>
+                                                    <th>创建时间：<input type="text" style="width:60px"> 至 <input type="text" style="width:60px"></th>
+                                                    <th>订单编号：<input type="text" style="width:150px"></th>
+                                                </tr>
+                                                <tr>
+                                                    <th>买家选择：<select name="" id=""><option value="all">全部</option></select></th>
+                                                    <th>订单类型：<select name="" id=""><option value="all">全部</option></select></th>
+                                                    <th>订单来源：<select name="" id=""><option value="all">全部</option></select> <button>搜索</button></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="processing">
+
+                                    </div>
+                                    <div class="tab-pane fade" id="hasdone">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="logistictools"></div>
+                            <div class="tab-pane fade" id="logisticservice"></div>
+                            <div class="tab-pane fade" id="iwantexpress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">宝贝管理</div>
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#newitem" data-toggle="tab">发布宝贝</a></li>
+                            <li><a href="#onsaleitems" data-toggle="tab">出售中的宝贝</a></li>
+                            <li><a href="#storeditems" data-toggle="tab">仓库中的宝贝</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="newitem">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label for="name">宝贝名称：</label>
+                                        <input type="text" class="form-control" id="name" placeholder="请输入宝贝名称">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="onsaleitems">
+                                onsales
+                            </div>
+                            <div class="tab-pane fade" id="storeditems">
+                                stored
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">客户服务</div>
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#refundmanage" data-toggle="tab">退款管理</a></li>
+                            <li><a href="#illegalrecord" data-toggle="tab">违规记录</a></li>
+                            <li><a href="#fundrepayment" data-toggle="tab">基金还款</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="refundmanage">
+                                    <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th>收件人名称：<input type="text" style="width:150px"></th>
+                                                    <th>买家昵称：<input type="text" style="width:150px"></th>
+                                                    <th>创建时间：<input type="text" style="width:60px"> 至 <input type="text" style="width:60px"></th>
+                                                    <th>订单编号：<input type="text" style="width:150px"></th>
+                                                </tr>
+                                                <tr>
+                                                    <th>买家选择：<select name="" id=""><option value="all">全部</option></select></th>
+                                                    <th>订单类型：<select name="" id=""><option value="all">全部</option></select></th>
+                                                    <th>订单来源：<select name="" id=""><option value="all">全部</option></select> <button>搜索</button></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#allrefund" data-toggle="tab">全部订单</a></li>
+                                    <li><a href="#notdelive" data-toggle="tab">仅退款(未发货)</a></li>
+                                    <li><a href="#delivedrefundonly" data-toggle="tab">仅退款(已发货)</a></li>
+                                    <li><a href="#delived" data-toggle="tab">退货退款</a></li>
+                                    <li><a href="#repair" data-toggle="tab">维修</a></li>
+                                    <li><a href="#change" data-toggle="tab">换货</a></li>
+                                    <li><a href="#sendduplicate" data-toggle="tab">补寄</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="allrefund">
+                                        allll
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="illegalrecord"></div>
+                            <div class="tab-pane fade" id="fundrepayment"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="vendors/js/jquery/jquery.min.js"></script>
+<script src="vendors/bootstrap/bootstrap.min.js"></script>
+<script src="vendors/js/vue/vue-i18n.min.js"></script>
+<script></script>
+</html>

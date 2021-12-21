@@ -1,0 +1,18 @@
+.robot1{
+    width:143px;
+    height:119px;
+    background:url(../../images/robot_read.gif) ;
+    position:absolute;
+    z-index:9;
+    top:12%;
+    right:10px;
+}
+.robot2{
+    width:143px;
+    height:105px;
+    background:url(../../images/robot_get.gif) ;
+    position:absolute;
+    z-index:9;
+    top:12%;
+    right:10px;
+}

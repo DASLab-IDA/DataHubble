@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>smart interaction </title>
+
+    <!-- Bootstrap -->
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    
+    <!-- Custom Theme Style -->
+    <link href="vendors/css/custom.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <!-- page content -->
+        <div role="main">
+          <div class="">
+            <div class="page-title">
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h3>User Report <small>Activity report</small></h3>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                      <div class="profile_img">
+                        <div id="crop-avatar">
+                          <!-- Current avatar -->
+                          <img class="img-responsive avatar-view" src="vendors/images/user.png" alt="Avatar" title="Change the avatar">
+                        </div>
+                      </div>
+                      <h3 id="user3" ></h3>
+
+                      <ul class="list-unstyled user_data">
+                        <li id="adress"><i class="fa fa-map-marker user-profile-icon"></i>
+                        </li>
+
+                        <li>
+                          <i class="fa fa-tag" id="labels"></i>
+                        </li>
+
+                        <li>
+                          <i class="fa fa-briefcase user-profile-icon"></i> Seller
+                        </li>
+
+                        <li class="m-top-xs">
+                          <i class="fa fa-external-link user-profile-icon"></i>
+                          <a href="http://www.baidu.com" target="_blank" id="sell_adress"></a>
+                        </li>
+                      </ul>
+
+                      <!--<a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>-->
+                      <br />
+
+                      <!-- start skills -->
+                      <h4>Store Detail</h4>
+                      <ul class="list-unstyled user_data">
+                        <li>
+                          <p>Activity</p>
+                          <div class="progress progress_sm progress-striped">
+                            <div class="progress-bar " role="progressbar" data-transitiongoal="20"></div>
+                          </div>
+                        </li>
+                        <li>
+                          <p>sales</p>
+                          <div class="progress progress_sm progress-striped">
+                            <div class="progress-bar " role="progressbar" data-transitiongoal="70" ></div>
+                          </div>
+                        </li>
+                        <li>
+                          <p>star</p>
+                          <div class="progress progress_sm progress-striped">
+                            <div class="progress-bar " role="progressbar" data-transitiongoal="30"></div>
+                          </div>
+                        </li>
+                      </ul>
+                      <!-- end of skills -->
+
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+
+                      <div class="profile_title">
+                        <div class="col-md-6">
+                          <h2>User Activity Report</h2>
+                        </div>
+                        <div class="col-md-6">
+                          <div id="reportrange" class="pull-right" style="margin-top: 5px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #E6E9ED">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                            <span></span><b class="caret"></b>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- start of user-activity-graph -->
+                      <div id="graph_bar" style="width:100%; height:280px;"></div>
+                      <!-- end of user-activity-graph -->
+
+                      <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                          <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Recent Activity</a>
+                          </li>
+                          <!--<li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Projects Worked on</a>-->
+                          <!--</li>-->
+                          <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Profile</a>
+                          </li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                          <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                            <!-- start recent activity -->
+                            <ul class="messages">
+                              <li>
+                                <img src="vendors/images/user.png" class="avatar" alt="Avatar">
+                                <div class="message_date">
+                                  <h3 class="date text-info">24</h3>
+                                  <p class="month">October</p>
+                                </div>
+                                <div class="message_wrapper">
+                                  <h4 class="heading"></h4>
+                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                  <br />
+                                  <p class="url">
+                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                    <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                                  </p>
+                                </div>
+                              </li>
+                              <li>
+                                <img src="vendors/images/user.png" class="avatar" alt="Avatar">
+                                <div class="message_date">
+                                  <h3 class="date text-error">21</h3>
+                                  <p class="month">October</p>
+                                </div>
+                                <div class="message_wrapper">
+                                  <h4 class="heading"></h4>
+                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                  <br />
+                                  <p class="url">
+                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
+                                    <a href="#" data-original-title="">Download</a>
+                                  </p>
+                                </div>
+                              </li>
+                              <li>
+                                <img src="vendors/images/user.png" class="avatar" alt="Avatar">
+                                <div class="message_date">
+                                  <h3 class="date text-info">4</h3>
+                                  <p class="month">October</p>
+                                </div>
+                                <div class="message_wrapper">
+                                  <h4 class="heading"></h4>
+                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                  <br />
+                                  <p class="url">
+                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                    <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                                  </p>
+                                </div>
+                              </li>
+                              <li>
+                                <img src="vendors/images/user.png" class="avatar" alt="Avatar">
+                                <div class="message_date">
+                                  <h3 class="date text-error">1</h3>
+                                  <p class="month">October</p>
+                                </div>
+                                <div class="message_wrapper">
+                                  <h4 class="heading"></h4>
+                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                  <br />
+                                  <p class="url">
+                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
+                                    <a href="#" data-original-title="">Download</a>
+                                  </p>
+                                </div>
+                              </li>
+                            </ul>
+                            <!-- end recent activity -->
+                          </div>
+
+                          <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                            <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
+                              photo booth letterpress, commodo enim craft beer mlkshk </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="vendors/js/jquery/2.2.3/jquery.min.js"></script>
+    <script type="text/javascript" src="vendors/js/jquery/plugin/jquery.cookie.js"></script>
+    <!-- Bootstrap -->
+    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="vendors/nprogress/nprogress.js"></script>
+    <!-- morris.js -->
+    <script src="vendors/raphael/raphael.min.js"></script>
+    <script src="vendors/morris.js/morris.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="vendors/moment/min/moment.min.js"></script>
+    <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <script type="text/javascript" src="vendors/js/dataset/user.js"></script>
+  </body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="vendors/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="vendors/font-awesome-4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="vendors/ionRangeSlider/ion.rangeSlider.css">
+    <link rel="stylesheet" href="vendors/ionRangeSlider/ion.rangeSlider.skinFlat.css">
+    <link rel="stylesheet" href="vendors/css/jquery.horizontal.scroll.css">
+    <link rel="stylesheet" href="vendors/css/sycm.css">
+    <link rel="stylesheet" href="vendors/css/robot/robot.css">
+</head>
+
+<body>
+    <div id="myScrollspy" style="position: absolute;right: 150px;top:25%;align-self: center;z-index: 1000;">
+
+        <div class="panel panel-default nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="25%"
+            style="background-color: transparent;border-color: transparent">
+
+            <ul class="list-group">
+                <div id="robot" class="robot1" data-toggle="modal" data-target="#myModal" onclick="robotchange()"
+                    style="position: relative;" @click="cli()"><span class="badge bg-red" id="robot_badge"
+                        style="margin-left: 9px; margin-top:9px;"></span>
+                    <span class="badge" style="float:right;background-color: blue" v-show="updated==true"
+                        @click="updated==false">!</span>
+                </div>
+                <li class="list-group-item" id="listTitle">猜你想问</li>
+                <li class="list-group-item" v-for="(i,index) in interests"
+                    v-show="Nums == 0 && interesting && (index==1 || interests[1].Show!=i.Show) " :class="odd(index)"
+                    @click="ReRange(i.Title, index)"><a href="#" v-cloak>{{i.Show}}</a></li>
+                <li class="list-group-item" v-for="(i,index) in items" v-show="index==Nums" :class="odd(2)"
+                    @click="ModalOpen()"><a href="#" v-cloak>{{i.Title}}</a></li>
+                <li class="list-group-item" id="chatservice">
+                    <i class="fa fa-wechat"></i>
+                    <a id="ChatService" href="javascript:void(0)" style="color:white" class="popover-show"
+                        data-container="body" data-toggle="popover" data-placement="bottom"
+                        data-content="<img src='vendors/images/QRCODE.jpg' alt=''>">联系我们</a>
+
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div id="currentstatus" class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-body" style="min-height:350px">
+                    <div id="headline">
+                        <div id="title">
+                            <p style="font-size: 20px">&nbsp;&nbsp;&nbsp;实时概况</p>
+                        </div>
+                        <div id="updatetime" v-cloak>更新时间：{{currenttime}}&nbsp;</div>
+                    </div>
+                    <div id="statuscard">
+                        <div id="status_left" class="col-sm-8">
+                            <div id="card_left" onmouseover="Hover.Over('支付金额')" onmouseout="Hover.Out('支付金额')">
+                                <div class="col-xs-2">
+                                    <span class="fa-stack fa-2x">
+                                        <i class="fa fa-circle fa-stack-2x" style="color:#2062e6"></i>
+                                        <i class="fa fa-cny fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </div>
+                                <div class="col-xs-4">
+                                    支付金额（元）：<br>
+                                    <p id="paid" v-cloak>{{paid}}</p>
+                                </div>
+                                <div class="col-xs-2">
+                                    <!--留空-->
+                                </div>
+                                <div class="col-xs-4" id=status_data>
+                                    行业排名&nbsp;&nbsp;<span v-cloak>{{rank}}</span><br> 昨日全天&nbsp;&nbsp;
+                                    <span v-cloak>{{yeste}}</span><br>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="chart_currentstatus_left" onmouseover="Hover.Over('支付金额表格')"
+                                onmouseout="Hover.Out('支付金额表格')"></div>
+                        </div>
+                        <div id="status_right" class="col-sm-4">
+                            <br>
+                            <div class="col-xs-6" v-for="c in cards" style="padding:0px"
+                                @mouseover="HoverOver(c.column)" @mouseout="HoverOut(c.column)">
+                                <div class="col-xs-12">
+                                    <span class="fa-stack fa-3x">
+                                        <i class="fa fa-circle fa-stack-2x" :style="c.style"></i>
+                                        <i :class="c.img"></i>
+                                    </span>
+                                </div>
+                                <div id="columns" class="col-xs-12" v-cloak>
+                                    <br>{{c.column}}
+                                    <br>{{c.nums}}
+                                </div>
+                                <div id='nums' class="col-xs-12" v-cloak>
+                                    排名 <br><span>{{c.rating}}</span><br> 昨日 <br><span>{{c.yesterday}}</span>
+                                </div>
+                                <div class="col-xs-12"><br></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="shopsurvey" class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body" style="min-height:350px">
+                    <div id="survey_headline">
+                        <div id="title">
+                            <h4>店铺概况</h4>
+                        </div>
+                        <div id="survey_updatetime" v-cloak>更新时间：{{currenttime}}</div>
+                    </div>
+                    <div id="surveycard">
+                        <div class="row">
+                            <div class="col-sm-6" id="survey_rank">
+                                <br>
+                                <span style="font-size: 15px">30天支付金额排行</span><br>
+                                <span style="font-size: 22px" v-cloak>{{paymentrank}}名<br></span>
+                                <span style="font-size: 12px;color:gray" v-cloak>较前日 <i :class="up"
+                                        :style="color"></i>{{changement}}名</span>
+                            </div>
+                            <div class="col-sm-6" id="survey_rank_table">
+                                <div id="chart_shopsurvey_rank"></div>
+                            </div>
+                        </div>
+                        <div id="survey_progress" onmouseover="Hover.Over('销售目标进度')" onmouseout="Hover.Out('销售目标进度')">
+                            &nbsp;&nbsp;
+                            <p style="font-size:14px">本月销售目标进度：&nbsp;&nbsp;&nbsp;<i data-toggle="modal"
+                                    data-target="#MissionSet">设置目标</i></p>
+                            <div id="progress_textline">
+                                <div class="col-xs-4" style="padding: 0">
+                                    <div id="percentage" v-cloak>&nbsp;&nbsp;{{percentage}}</div>
+                                </div>
+                                <div class="col-xs-8" style="padding: 0">
+                                    <div id="plandata" v-cloak>{{now}}/{{plan}}&nbsp;&nbsp;</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="chart_shopsurvey_progress" class="row" onmouseover="Hover.Over('销售目标进度')"
+                        onmouseout="Hover.Out('销售目标进度')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-default" role="navigation" style="position: sticky ;top:0px;z-index:999">
+        <div class="container-fluid"></div>
+        <div class="col-md-4">
+            <ul class="nav navbar-nav">
+                <li class="active" onclick="charts_resize()"><a data-toggle="tab" href="#operation_window">运营视窗</a></li>
+                <li onclick="charts_resize()" style="display: none;"><a data-toggle="tab"
+                        href="#service_window">服务视窗</a></li>
+                <li onclick="charts_resize()"><a data-toggle="tab" href="#manage_window">管理视窗</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3"></div>
+        <div style="margin-top:8px" class="col-md-4" id="DateRange">
+            <div class="input-group" style="color:rgb(0, 0, 0)">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control" type="text" id="datepicker1" />
+                <span class="input-group-addon">-</span>
+                <input class="form-control" type="text" id="datepicker2" />
+                <span class="input-group-btn"><button class="btn btn-default" onclick="ChangeDateRange()"><i
+                            class="fa fa-search"></i></button></span>
+            </div>
+        </div>
+    </nav>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="operation_window">
+            <div class="row">
+                <div class="col-md-12" id="op_1">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            整体看板
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-12" id="total_static"
+                                @mouseover="HoverOver('整体看板'+static[activedCol].column)"
+                                @mouseout="HoverOut('整体看板'+static[activedCol].column)">
+                                <table class="table table-bordered" style="width:100%;table-layout : fixed">
+                                    <tbody>
+                                        <tr>
+                                            <td v-for="(s,index) in static" :class="s.class">
+                                                <div v-if="s.TBD != true" @click="update(index)">
+                                                    <span style="font-size: 20px" v-cloak>{{s.column}}</span><br>
+                                                    <span style="font-size: 30px" v-cloak>{{s.num}}</span><br><br>
+                                                    <span style="font-size: 15px;color:grey" v-cloak>较行业Top1
+                                                        {{s.rate_top1}} <i :class="s.up1"></i></span><br>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12" style="height:450px" id="chart_total"
+                                onmouseover="Hover.Over('整体看板'+columns.static[columns.activedCol].column)"
+                                onmouseout="Hover.Out('整体看板'+columns.static[columns.activedCol].column)"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="op_2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            行业排行
+                        </div>
+                        <div class="panel-body">
+                            <div class="row" id="shop_index">
+                                <div class="col-md-4" v-for="r in Ranks">
+                                    <div>
+                                        <h3 v-cloak>{{r.RankTitle}}</h3>
+                                        <table style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <td style="width:10%">排名</td>
+                                                    <td style="width:70%" v-cloak>{{r.RankCol.Col1}}</td>
+                                                    <td style="width:20%" v-cloak>{{r.RankCol.Col2}}</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(l,index) in r.RankList">
+                                                    <td v-cloak>{{index+1}}</tdv-cloak>
+                                                    <td v-cloak>
+                                                        <img v-if="typeof l.img!='undefined'" :src="l.img"
+                                                            style="height: 60px;width:60px" alt=""> {{l.Col1}}
+                                                    </td>
+                                                    <td v-cloak>{{l.Col2}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade in" id="service_window">
+            <div class="row">
+                <div class="col-md-12 LineChartTable">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            服务体验
+                        </div>
+                        <div class="panel-body">
+                            <div id="service_experience">
+                                <div class="row">
+                                    <div class="col-sm-3 Column" v-for="r in Rates" @mouseover="HoverOver(r.title)"
+                                        @mouseout="HoverOut(r.title)">
+                                        <span id="title">{{r.title}}</span><br>
+                                        <span id="rate">{{r.rate}}</span><br>
+                                        <span id="yesterday">较前一日<i class='fa fa-angle-double-up' id="up"
+                                                v-if='r.up'></i><i id="down" class='fa fa-angle-double-down'
+                                                v-else></i><span>{{r.Yesterday}}</span></span>
+                                        <div :id="'chart_'+r.instance" class="charts col-sm-12"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 LineChartTable">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            咨询看板
+                        </div>
+                        <div class="panel-body">
+                            <div id="consult">
+                                <div class="row">
+                                    <div v-for='n in nums' class="Column" :class="'col-sm-'+(3*n.column).toString()">
+                                        <div v-for="r in n.datay" :class="'col-sm-'+(12/n.column).toString()"
+                                            @mouseover="HoverOver(r.title)" @mouseout="HoverOut(r.title)">
+                                            <span id="title">{{r.title}}</span><br>
+                                            <span id="num">{{r.num}}</span><br>
+                                            <span id="yesterday">较前一日<i class='fa fa-angle-double-up' id="up"
+                                                    v-if='r.y_up'></i><i id="down" class='fa fa-angle-double-down'
+                                                    v-else></i><span>{{r.yesterday}}</span></span><br>
+                                            <span id="yesterday">较上周同期<i class='fa fa-angle-double-up' id="up"
+                                                    v-if='r.w_up'></i><i id="down" class='fa fa-angle-double-down'
+                                                    v-else></i><span>{{r.lastweek}}</span></span>
+                                        </div>
+                                        <br>
+                                        <div :id="'chart_'+n.instance" class='col-sm-12 charts'
+                                            @mouseover="HoverOver(n.titles)" @mouseout="HoverOut(n.titles)"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 LineChartTable">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            评价看板
+                        </div>
+                        <div class="panel-body">
+                            <div id="comment">
+                                <div class="row">
+                                    <div v-for='n in nums' class="Column" :class="'col-sm-'+(3*n.column).toString()">
+                                        <div v-for="r in n.datay" :class="'col-sm-'+(12/n.column).toString()"
+                                            @mouseover="HoverOver(r.title)" @mouseout="HoverOut(r.title)">
+                                            <span id="title">{{r.title}}</span><br>
+                                            <span id="num">{{r.num}}</span><br>
+                                            <span id="yesterday">较前一日<i class='fa fa-angle-double-up' id="up"
+                                                    v-if='r.y_up'></i><i id="down" class='fa fa-angle-double-down'
+                                                    v-else></i><span>{{r.yesterday}}</span></span><br>
+                                            <span id="yesterday">较上周同期<i class='fa fa-angle-double-up' id="up"
+                                                    v-if='r.w_up'></i><i id="down" class='fa fa-angle-double-down'
+                                                    v-else></i><span>{{r.lastweek}}</span></span>
+                                            <br>
+                                        </div>
+                                        <div :id="'chart_'+n.instance" class='col-sm-12 charts'
+                                            @mouseover="HoverOver(n.titles)" @mouseout="HoverOut(n.titles)"></div>
+                                    </div>
+                                    <div id="NegativeComments" class="col-sm-3 Sublist"
+                                        onmouseover="Hover.Over('负面评价榜')" onmouseout="Hover.Out('负面评价榜')">
+                                        <span id="title">负面评价榜</span>
+                                        <table>
+                                            <tr>
+                                                <td>排名 </td>
+                                                <td>商品</td>
+                                                <td>负面评价数</td>
+                                            </tr>
+                                            <tr v-for="n in negativecomments">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12  LineChartTable">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            退款看板
+                        </div>
+                        <div class="panel-body">
+                            <div id="refund">
+                                <div class="row">
+                                    <div v-for='n in nums' class="Column" :class="'col-sm-'+(3*n.column).toString()">
+                                        <div v-for="r in n.datay" :class="'col-sm-'+(12/n.column).toString()"
+                                            @mouseover="HoverOver(r.title)" @mouseout="HoverOut(r.title)">
+                                            <span id="title">{{r.title}}</span><br>
+                                            <span id="num">{{r.num}}</span><br>
+                                            <span id="yesterday">较前一日<i class='fa fa-angle-double-up' id="up"
+                                                    v-if='r.y_up'></i><i id="down" class='fa fa-angle-double-down'
+                                                    v-else></i><span>{{r.yesterday}}</span></span><br>
+                                            <span id="yesterday">较上周同期<i class='fa fa-angle-double-up' id="up"
+                                                    v-if='r.w_up'></i><i id="down" class='fa fa-angle-double-down'
+                                                    v-else></i><span>{{r.lastweek}}</span></span>
+                                            <br>
+                                            <div :id="'chart_'+n.instance" class='col-sm-12 charts'></div>
+                                        </div>
+
+                                    </div>
+                                    <div id="RefundItems" class="col-sm-3 Sublist" onmouseover="Hover.Over('退款商品榜')"
+                                        onmouseout="Hover.Out('退款商品榜')">
+                                        <span id="title">退款商品榜</span>
+                                        <table>
+                                            <tr>
+                                                <td>排名 </td>
+                                                <td>商品</td>
+                                                <td>成功退款笔数</td>
+                                            </tr>
+                                            <tr v-for="r in refunditems">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade in" id="manage_window">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default" id="evaluation">
+                        <div class="panel-heading">
+                            评论看板
+                        </div>
+                        <div class="panel-body">
+                            <transition-group name='list-complete'>
+                                <div v-for="e in eval" v-bind:key='e.id' class="list-complete-e col-md-3"
+                                    style="margin: 0">
+                                    <div class="well">
+                                        <div class="col-md-6" v-text="e.user" id="user"></div>
+                                        <div class="col-md-6" v-html="e.star" id="star">{{e.star}}</div><br>
+                                        <div class="col-md-12" id="content" v-text="e.content"></div>
+                                    </div>
+                                </div>
+                            </transition-group>
+                            <div clsss="col-md-12" id="Eval_Chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default" style="display: none;">
+                        <div class="panel-heading">
+                            整体看板
+                        </div>
+                        <div class="panel-body">
+                            <div id="Manage_Total">
+                                <div v-for="(n,index) in nums" :class="'col-md-'+n.col" @mouseover="HoverOver(n.title)"
+                                    @mouseout="HoverOut(n.title)">
+                                    <span class="Title" v-text="n.title"></span><br>
+                                    <div v-for="l in n.label" :class="'col-md-'+n.Labellength">
+                                        <span class="LabelHead" v-text="l.head"></span><br><span class="LabelNumber"
+                                            v-text="l.number"></span>
+                                    </div>
+                                    <div :id="'chart_'+n.instance" class="col-md-12 charts"></div>
+                                    <div v-if="index<2"><br><br></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default" style="display: none;">
+                        <div class="panel-heading">
+                            流量看板
+                        </div>
+                        <div class="panel-body">
+                            <div id="Flow">
+                                <div class="col-md-8" id="ClassOne" @mouseover="HoverOver(classA.title)"
+                                    @mouseout="HoverOut(classA.title)">
+                                    <span id="title" v-text="classA.title"><br></span>
+                                    <div class="col-md-12 charts" id="chart_flow"></div>
+                                </div>
+                                <div class="col-md-4" id="ClassTwo" @mouseover="HoverOver(classB.title)"
+                                    @mouseout="HoverOut(classB.title)">
+                                    <span id="title" v-text="classB.title"></span>
+                                    <div class="col-md-12" id="table_flow">
+                                        <table>
+                                            <tr v-for="s in classB.sources">
+                                                <td v-for="c in s" v-text="c"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default" style="display: none;">
+                        <div class="panel-heading">
+                            推广看板
+                        </div>
+                        <div class="panel-body">
+                            <div id="Spread" @mouseover="HoverOver(title)" @mouseout="HoverOut(title)">
+                                <div class="col-md-8" id="Canvas">
+                                    <span id="title" v-text="title"></span><br>
+                                    <div v-for="l in label" class="col-md-3"><span id="title"
+                                            v-text="l.title"></span><br><span id="number" v-text="l.number"></span>
+                                    </div>
+                                    <div class="col-md-12 charts" id="chart_spread"></div>
+                                </div>
+                                <div class="col-md-4" id="range">
+                                    <div class="col-md-12" id="table_spread">
+                                        <table>
+                                            <tr v-for="s in sources">
+                                                <td v-for="c in s" v-text="c"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="Queues">
+                    <div class="panel panel-default" style="display: none;">
+                        <div class="panel-heading">
+                            行业排行
+                        </div>
+                        <div class="panel-body">
+                            公共：{{Queue}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--模态框们-->
+    <div class="modal fade" id="MissionSet" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="input-group">
+                        <span class="input-group-addon">目标</span>
+                        <input type="text" class="form-control" id="MissionSet1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        onclick="MissionSet(document.getElementById('MissionSet1').value)">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        onclick="document.getElementById('robot').className='robot1'">
+        <div class="modal-dialog modal-lg" id="mc">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <img src="vendors/images/robot_get.png" style="height: 25px;width: 25px;margin-right:15px">
+                        智能机器人为您推荐：
+                    </h4>
+                </div>
+                <div class="left-bar">
+                    <div class="history">
+                        <div class="history-date">
+                            <ul id="history-ul">
+                                <h2 class="first">
+                                    <li style="max-width:35px;font-size:18px;right: -24px;position:absolute;margin-top:-11px;"
+                                        id="historytitle">
+                                        分析历史
+                                    </li>
+                                </h2>
+                                <li v-for="h in History" @click="SwitchS(h.Section)">
+                                    <h3>{{h.time}}</h3>
+                                    <dl>
+                                        <dt>{{h.title}}</dt>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modalbody" style="height: 800px">
+
+                    <nav class="navbar navbar-default" role="navigation" v-show="!SQLSection">
+                        <div class="container-fluid"></div>
+                        <div>
+                            <ul class="nav navbar-nav navbar-left">
+                                <li v-for="s in Sector" v-if="JudgeF(s.Num)" :class="JudgeS(s.Num)?'active':''"><a
+                                        href="#" @click="SwitchS(s.Num)" v-cloak>{{s.Title}}</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+
+                    <div id="Loading" v-show="Loading&&!SQLSection" style="height: 83%">
+                        <br><br>
+                        <i class="fa fa-spinner fa-pulse fa-3x" style="color:grey"></i><br>
+                    </div>
+                    <div id="FirstPage" id="TabTop" style="height: 83%" v-show="Section==1&&!Loading&&!SQLSection">
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            以下是各列的数据分布和为您推荐的过滤条件
+                        </div>
+                        <div class="col-md-3" style="overflow:scroll;height: 85%" id="TabLeft">
+                            <div v-for="(d,index) in distribution"
+                                style="height:150px;width: 200px;background-color: #f5f7fa" @click="SwitchTab(index)"
+                                :id="'MiniChart'+d.columnname" @mouseover="TabOver(d.columnname)"
+                                @mouseout="TabOut(d.columnname)"></div>
+                        </div>
+                        <div class="col-md-9" id="ChartAndBars" style="height: 85%">
+                            <div id="Tabs">
+                                <ul id="myTab" class="nav nav-tabs">
+                                    <li v-for="(d,index) in distribution" v-if="typeof d.recommend!='undefined'"
+                                        :class="index==0?'active':''" :id="'Tab'+index" @click="SelectTab(index)"><a
+                                            :href="'#Content'+index" data-toggle="tab"
+                                            v-cloak><span>★</span>{{NameEnum(d.columnname)}}</a></li>
+                                    <li v-show="SimpleTab" @click="DeSimplize()"><a href="#">更多...</a></li>
+                                    <li v-show="!SimpleTab" v-for="(d,index) in distribution"
+                                        v-if="typeof d.recommend=='undefined'" :id="'Tab'+index"
+                                        @click="SelectTab(index)"><a :href="'#Content'+index" data-toggle="tab"
+                                            v-cloak>{{NameEnum(d.columnname)}}</a></li>
+                                </ul>
+                            </div>
+                            <div id="Panels" class="tab-content">
+                                <div v-for="(d,index) in distribution" class="tab-pane fade"
+                                    :class="index==0?'in active':''" :id="'Content'+index">
+                                    <div v-if="d.type==93||d.type==4||d.type==8" class="col-md-12" style="height:100px">
+                                        <input type="text" :id="'Slider_'+d.columnname">
+                                    </div>
+                                    <div v-else class="col-md-12" style="height:100px">
+                                        <button type="button" class="btn btn-default" v-for="x in d.item"
+                                            @click="StringFilter(x,index)" v-cloak>{{x.length
+                                            <=6?x:x.substr(0,6)+'...'}}< /button>
+                                    </div>
+                                    <div class="col-md-12" :id="'Chart'+d.columnname" style="width:600px;height:400px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="SecondPage" v-show="Section==2&&!Loading&&!SQLSection" style="height: 83%">
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            以下是为您推荐的数据组合， 点击以选择您感兴趣的图表继续分析， 共<b v-text="SecondSelector.length"></b>张图表
+                        </div>
+                        <div style="height: 85%">
+                            <div v-for="(s,index) in SecondSelector" class="col-md-6"
+                                :class="s.actived==true?'active':''" @click="SecondSelect(index)">
+                                <div :id="'SecondChart'+index" style="height:270px;width:360px" class="ChartSecond">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="ThirdPage" v-show="Section==3&&!Loading&&!SQLSection" style="height: 83%">
+                        <div class="alert alert-success alert-dismissable" id="alert-3">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+
+                        </div>
+                        <div v-for="(t,index) in ThirdSelector" :class="index==0?'col-md-12':'col-md-6'"
+                            @click="ThirdSelect(index)">
+                            <div class="panel panel-default" :class="t.actived==true?'active':''"
+                                style="border-radius: 20px;">
+                                <div class="panel-body">
+                                    <img class="methodpic" :src="t.img" alt=""
+                                        style="border-radius: 15px;vertical-align: top;"
+                                        :style="index==0?'width:23%;':'width:36%'">
+                                    <div style="display: inline-block;margin: 3% 3%;"
+                                        :style="index==0?'font-size:18px':'font-size:15px'">
+                                        <p style="padding-bottom: 10px;"
+                                            :style="index==0?'font-size:20px':'font-size:16px'">选择此分析方法，您将可以：</p>
+                                        <li v-for="(s,titleindex) in t.title" v-if="index==0?titleindex<3:titleindex<2"
+                                            style="padding-left: 10%;">{{s}}</li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="FourthPage" v-show="Section==4&&!Loading&&!SQLSection">
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            您创建的分析流程如下。点击确定部署分析流程，查看分析结果
+                        </div>
+                        <div id="NodeFrame">
+                            <iframe id="nodered" src="http://10.176.24.40:1880/#"></iframe>
+                            <!--
+                        异常检测：http://10.190.88.25:1888/?jid=1560326701549
+                        预测：http://10.190.88.25:1888/?jid=1560326928528
+                        -->
+                        </div>
+
+                    </div>
+                    <div id="FifthPage" v-show="Section==5&&!Loading&&!SQLSection" style="height: 83%">
+                        <div class="alert alert-success alert-dismissable" id="alert-5">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="alert alert-success alert-dismissable" id="alert-6">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>
+                        <div id="result" style="width: 817px;height: 431px;margin: 5% 5% 5% 6.6%;"></div>
+                    </div>
+                    <div id="DataLineage" v-show="Section>=10&&!Loading&&!SQLSection" style="height: 83%">
+                        <iframe allowfullscreen frameborder="0" name="DataLineageFrame" id="DataLineageFrame" src="#"
+                            scrolling="yes"
+                            style="position:relative;width:100%;height:100%;overflow-x: hidden;overflow-y: hidden;">
+                        </iframe>
+                    </div>
+                    <div id="SQLExecutor" v-show="SQLSection" style="height: 92%">
+                        <div class="input-group" style="width: 80%;margin:0 auto;top:5%">
+                            <!-- <span class="input-group-addon">SQL</span> -->
+                            <input type="text" class="form-control" placeholder="指定数据库" id="dbname">
+                            <input type="text" class="form-control" placeholder="在此输入sql" id="InputSql">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" @click="SubmitSQL()"
+                                    id="SubmitSQL">提交</button>
+                            </span>
+                        </div>
+                        <div class="table-responsive" style="width: 80%;margin:0 auto;margin-top: 5%;">
+                            <table class="table table-striped" id="resulttable">
+                                <caption> </caption>
+                                <thead>
+                                    <!-- <tr>
+                                <th>名称</th>
+                                <th>城市</th>
+                              </tr> -->
+                                </thead>
+                                <tbody>
+                                    <!-- <tr>
+                                <td>Tanmay</td>
+                                <td>Bangalore</td>
+                              </tr>
+                              <tr>
+                                <td>Sachin</td>
+                                <td>Mumbai</td>
+                              </tr> -->
+                                </tbody>
+                            </table>
+                            <h4 id="runTime"></h4>
+                            <h4 id="errinfo"></h4>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        关闭
+                    </button>
+                    <button type="button" class="btn btn-default" @click="SQLExecutor()" id="SQLButton">
+                        SQL执行器
+                    </button>
+                    <button type="button" class="btn btn-default" @click="Lineage()" id="LineageButton"
+                        v-show="!SQLSection">
+                        数据血缘
+                    </button>
+                    <button type="button" id="selectButton" class="btn btn-primary" data-dismiss="modal"
+                        @click="Apply()" v-show="!SQLSection">
+                        确定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+<script src="vendors/js/jquery/2.2.3/jquery.js"></script>
+<script src="http://momentjs.com/downloads/moment.js" type="text/javascript"></script>
+<script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script src="vendors/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="vendors/js/echarts.js"></script>
+<script src="vendors/js/echarts-wordcloud.js"></script>
+<script src="vendors/js/vue/vue.js"></script>
+
+
+<script src="vendors/ionRangeSlider/ion.rangeSlider.js"></script>
+<script src="vendors/js/jquery.horizontal.scroll.js"></script>
+<script src="vendors/js/robotmodify.js"></script>
+<script src="vendors/js/sycm.js"></script>
+<script src="vendors/js/sycm_Service_Manage.js"></script>
+
+<script src='vendors/js/robot/robot.js'></script>
+<script type="text/javascript">
+    $(function () {
+        systole();
+    });
+
+    function systole() {
+        if (!$(".history").length) {
+            return;
+        }
+        var $warpEle = $(".history-date"),
+            $targetA = $warpEle.find("h2 a,ul li dl dt a"),
+            parentH,
+            eleTop = [];
+
+        parentH = $warpEle.parent().height();
+        $warpEle.parent().css({
+            "height": 100
+        });
+
+        setTimeout(function () {
+
+
+            $(".left-bar").hover(function () {
+                var t = document.getElementById("historytitle").style;
+                t.maxWidth = "80px";
+                t.right = "13px";
+                t.top = "17px";
+                t.fontSize = "20px";
+                t.background = "white";
+
+                $(this).stop(true, false);
+                $(this).animate({
+                    right: -200,
+                    height: 768
+                });
+                $(".history-date").find("ul").children(":not('h2:first')").each(function (idx) {
+                    eleTop.push($(this).position().top);
+                    $(this).css({
+                        "margin-top": -eleTop[idx]
+                    }).children().hide();
+                }).animate({
+                    "margin-top": 0
+                }, 500).children().fadeIn();
+                $(".history-date").parent().animate({
+                    height: '100%'
+                }, 200);
+            }, function () {
+                var t = document.getElementById("historytitle").style;
+                t.maxWidth = "35px";
+                t.right = "-24px";
+                t.top = "0px";
+                t.fontSize = "18px";
+
+                $(this).animate({
+                    right: -30,
+                    height: 100
+                });
+            });
+
+
+            $warpEle.find("ul").children(":not('h2:first')").addClass("bounceInDown").css({
+                "-webkit-animation-duration": "1s",
+                "-webkit-animation-delay": "0",
+                "-webkit-animation-timing-function": "ease",
+                "-webkit-animation-fill-mode": "both"
+            }).end().children("h2").css({
+                "position": "relative"
+            });
+
+        }, 600);
+
+        $targetA.click(function () {
+            $(this).parent().css({
+                "position": "relative"
+            });
+            $(this).parent().siblings().slideToggle();
+            $warpEle.parent().removeAttr("style");
+            return false;
+        });
+    }
+</script>
+
+</html>

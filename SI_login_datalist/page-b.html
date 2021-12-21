@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>smart interaction</title>
+    <!-- Bootstrap -->
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.css" >
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.buttons.css" >
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.nonblock.css" >
+    <!-- Custom Theme Style -->
+    <link href="vendors/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/css/robot/robot.css">
+
+    <link rel="stylesheet" href="vendors/animate.css/animate.css">
+    <link href="vendors/bootstrap-toggle-master/css/bootstrap-toggle.css" rel="stylesheet">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        .ui-pnotify.dark.ui-pnotify-fade-normal.ui-pnotify-in.ui-pnotify-fade-in.ui-pnotify-move {
+            display: none !important;
+        }
+
+    </style>
+</head>
+<body class="nav-sm" style="overflow-x:hidden">
+
+
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view" style="min-height:763px">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="page-b.html" class="site_title">
+                        <svg fill="white" width="45" height="45" viewBox="0 0 29 29" xmlns="http://www.w3.org/svg/2000" style="
+    margin-top: 5px;
+    margin-left: 5px;
+"><path d="M14.2237241,0.355862069 C6.36877241,0.355862069 0,6.78846395 0,14.7232602 L0,29.0906583 L14.2237241,29.0906583 C22.079669,29.0901567 28.4469517,22.6575549 28.4469517,14.7232602 C28.4469517,6.78846395 22.079669,0.355862069 14.2237241,0.355862069 M14.2237241,2.4122884 C20.9440552,2.4122884 26.4115862,7.93504702 26.4115862,14.7232602 C26.4115862,21.5119749 20.9440552,27.0337304 14.2237241,27.0337304 L2.03586207,27.0337304 L2.03586207,14.7232602 C2.03586207,7.93504702 7.50289655,2.4122884 14.2237241,2.4122884" id="Fill-9"></path><path d="M15.8217766,16.28479 L20.0245903,9.50510345 L13.3539145,13.7378307 C12.7431559,13.9645392 12.2783834,14.4881755 12.1338869,15.13921 L8.29802483,21.3285517 L14.3390731,17.4935674 C15.0183559,17.3802132 15.5749903,16.9142571 15.8217766,16.28479 M14.3182179,25.9745705 L14.3182179,25.9745705 L3.25752828,25.9745705 L3.25752828,14.8036614 C3.25752828,8.63388088 8.21063172,3.63225078 14.3182179,3.63225078 C20.4253076,3.63225078 25.3779145,8.63388088 25.3779145,14.8036614 C25.3779145,20.973442 20.4253076,25.9745705 14.3182179,25.9745705" id="Fill-10" data-spm-anchor-id="a21ag.8718589.logo.i0.33db50a5flaSEo"></path><path d="M14.8899972,14.7766771 C15.3507972,15.2541693 15.3423559,16.0235737 14.8666593,16.4905329 C14.392949,16.9584953 13.6337214,16.9464577 13.1719283,16.4694671 C12.7091421,15.9884639 12.7170869,15.222069 13.1912938,14.7546082 C13.6650041,14.2871473 14.427211,14.2966771 14.8899972,14.7766771" id="Fill-11"></path></svg>
+                        <span><!--{{ $t('sidebar.smart_interaction') }}-->生意参谋</span>
+                    </a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info -->
+                <div class="profile clearfix">
+                    <div class="profile_pic">
+                        <img src="vendors/images/user.png" alt="..." class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>{{ $t('sidebar.welcome') }},</span>
+                        <h2 id="user1"></h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+
+                <br>
+
+            
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section" v-for="s in section">
+                        <h3 v-if="s.title!=''">{{s.title}}</h3>
+                        <ul class="nav side-menu" v-for="l in s.list">
+                            <li><a :href="l.link" target="iframe"><i v-if="l.fa!=''" :class="l.fa"></i>{{l.name}}</a></li>
+                        </ul>
+                    </div>            
+                </div>
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                <div class="sidebar-footer hidden-small">
+                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Profile" onclick="getElementById('iframe').src='profile.html'">
+                        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Fullscreen">
+                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true" onclick="fullscreen()"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Move to top" href="#top">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="" href="login-v2.html"
+                       data-original-title="Logout">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- /menu footer buttons -->
+            </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav" >
+            <div class="nav_menu">
+                <nav>
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <img src="vendors/images/user.png" alt=""><span id="user2"></span>
+                                <span class="fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li><a onclick="getElementById('iframe').src='profile.html'"> {{ $t('navbar.profile') }}</a></li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <!--<span class="badge bg-red pull-right">50%</span>-->
+                                        <span>{{ $t('navbar.settings') }}</span>
+                                    </a>
+                                </li>
+                                <li><a href="javascript:;">{{ $t('navbar.help') }}</a></li>
+                                <li><a href="login-v2.html"><i class="fa fa-sign-out pull-right"></i> {{ $t('navbar.logout') }}</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" role="presentation">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <b v-cloak>{{ $t('language') }}&nbsp&nbsp</b>
+                                <span class="fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a onclick="setLanguage('zh')">中文</a></li>
+                                <li><a onclick="setLanguage('en')">English</a></li>
+                                <li><a >Français</a></li>
+                                <li><a >Deutsch</a></li>
+                                <li><a >한글</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="right_col" role="main" style="padding:0">
+            <iframe allowfullscreen frameborder="0" name="iframe" id="iframe" src="sycm.html" scrolling="yes"
+                    style="position:relative;width:100%;height:100%;overflow-x: hidden;overflow-y: hidden;">
+            </iframe>
+        </div>
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                {{ $t('footer')}}
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<script type="text/javascript" src="vendors/js/jquery/2.2.3/jquery.min.js"></script>
+<script type="text/javascript" src="vendors/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/search.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/user.js"></script>
+<!-- PNotify -->
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.js"></script>
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+<!-- Custom Theme Scripts -->
+<!--<script src="vendors/js/custom.min.js"></script>-->
+<script type="text/javascript" src="vendors/gentelella-master/build/js/custom.min.js"></script>
+<script type="text/javascript" src="vendors/js/vue/vue.js"></script>
+<script type="text/javascript" src="vendors/js/vue/vue-i18n.min.js"></script>
+<script type="text/javascript" src="vendors/js/language.js"></script>
+<script type="text/javascript" src="vendors/js/vue/vue-cookies.js"></script>
+<script type="text/javascript" src="vendors/js/page.js"></script>
+
+
+<script type="text/javascript" src="vendors/js/jquery/plugin/jquery.cookie.js"></script>
+<script src="vendors/bootstrap-toggle-master/js/bootstrap-toggle.js"></script>
+<script type="text/javascript" src='vendors/js/robot/robot.js'></script>
+
+
+
+<script>
+    //列表框
+    {
+        let lists=new Vue({
+            el:"#sidebar-menu",
+            data:{
+                section:[
+                    {
+                        title:"",
+                        list:[
+                            {
+                                link:"sycm.html",
+                                fa:"fa fa-home",
+                                name:"首页"
+                            },
+                            {
+                                link:"javascript:void(0)",
+                                fa:"fa fa-rocket",
+                                name:"作战室"
+                            },
+                        ]
+                    },
+                    {
+                        title:"",
+                        list:[
+                            {
+                                link:"dataset_v5.html",
+                                fa:"fa fa-edit",
+                                name:"数据集"
+                            },
+                            {
+                                link:"modelmanage.html",
+                                fa:"fa fa-calculator",
+                                name:"模板管理"
+                            },
+                        ]
+                    }
+                ]
+            }
+
+        })
+    }
+    //获取窗口高度
+    function getClientHeight(){
+        var clientHeight=0;
+    if(document.body.clientHeight&&document.documentElement.clientHeight){
+        var clientHeight = (document.body.clientHeight<document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+    }
+    else{
+        var clientHeight = (document.body.clientHeight>document.documentElement.clientHeight)?document.body.clientHeight:document.documentElement.clientHeight;
+    }
+    return clientHeight;
+    }
+    let frameheight=getClientHeight()-58;
+    $(".right_col").css("height",frameheight);
+    //结束
+
+    if($cookies.get('language')){
+        i18n.locale = $cookies.get('language')
+    }
+    if($cookies.get('username') == 'admin'){
+        document.getElementById('iframe').src='admin.html';
+    }
+
+    new Vue({
+        el: '.main_container',
+        i18n
+    })
+
+    $BODY = $('body');
+    $MENU_TOGGLE = $('#menu_toggle');
+    $SIDEBAR_MENU = $('#sidebar-menu');
+    $SIDEBAR_FOOTER = $('.sidebar-footer');
+    $LEFT_COL = $('.left_col');
+    $RIGHT_COL = $('.right_col');
+    $NAV_MENU = $('.nav_menu');
+    $FOOTER = $('footer');
+
+    $MENU_TOGGLE.on('click', function() {
+		console.log('clicked - menu toggle');
+
+		if ($BODY.hasClass('nav-md')) {
+		    // console.log('1')
+			$SIDEBAR_MENU.find('li.active ul').hide();
+			$SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
+		} else {
+		    // console.log('2')
+			$SIDEBAR_MENU.find('li.active-sm ul').show();
+			$SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
+		}
+	$BODY.toggleClass('nav-md nav-sm');
+	setContentHeight();
+
+    });
+
+    var setContentHeight = function () {
+        // reset height
+        $RIGHT_COL.css('min-height', $(window).height());
+
+        var bodyHeight = $BODY.outerHeight(),
+            footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
+            leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
+            contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
+
+        // normalize content
+        contentHeight -= $NAV_MENU.height() + footerHeight;
+
+        $RIGHT_COL.css('min-height', contentHeight);
+    };
+</script>
+
+</body>
+</html>

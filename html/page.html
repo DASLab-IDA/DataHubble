@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>smart interaction</title>
+    <!-- Bootstrap -->
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.css" >
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.buttons.css" >
+    <link rel="stylesheet" href="vendors/pnotify/dist/pnotify.nonblock.css" >
+    <!-- Custom Theme Style -->
+    <link href="vendors/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="vendors/css/robot/robot.css">
+
+    <link rel="stylesheet" href="vendors/animate.css/animate.css">
+    <link href="vendors/bootstrap-toggle-master/css/bootstrap-toggle.css" rel="stylesheet">
+</head>
+
+<body class="nav-sm" style="overflow-x:hidden">
+
+
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view" style="min-height: 1500px">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="page.html" class="site_title"><i class="fa fa-simplybuilt"></i> <span>{{ $t('sidebar.smart_interaction') }}</span></a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info -->
+                <div class="profile clearfix">
+                    <div class="profile_pic">
+                        <img src="vendors/images/user.png" alt="..." class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>{{ $t('sidebar.welcome') }},</span>
+                        <h2 id="user1"></h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+
+                <br>
+
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <h3>{{ $t('sidebar.smart_interaction') }}</h3>
+                        <ul class="nav side-menu">
+                            <li><a><i class="fa fa-home"></i> {{ $t('sidebar.home') }} <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="#">Dashboard</a></li>
+                                    <li><a href="#">Dashboard2</a></li>
+                                    <li><a href="#">Dashboard3</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                <div class="sidebar-footer hidden-small">
+                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Profile" onclick="getElementById('iframe').src='profile.html'">
+                        <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Fullscreen">
+                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true" onclick="fullscreen()"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Move to top" href="#top">
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="" href="login-v1.html"
+                       data-original-title="Logout">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- /menu footer buttons -->
+            </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <nav>
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <img src="vendors/images/user.png" alt=""><span id="user2"></span>
+                                <span class="fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li><a onclick="getElementById('iframe').src='profile.html'"> {{ $t('navbar.profile') }}</a></li>
+                                <li>
+                                    <a href="javascript:;">
+                                        <!--<span class="badge bg-red pull-right">50%</span>-->
+                                        <span>{{ $t('navbar.settings') }}</span>
+                                    </a>
+                                </li>
+                                <li><a href="javascript:;">{{ $t('navbar.help') }}</a></li>
+                                <li><a href="login-v1.html"><i class="fa fa-sign-out pull-right"></i> {{ $t('navbar.logout') }}</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown" role="presentation">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <b>{{ $t('language') }}&nbsp&nbsp</b>
+                                <span class="fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a onclick="setLanguage('zh')">中文</a></li>
+                                <li><a onclick="setLanguage('en')">English</a></li>
+                                <li><a >Français</a></li>
+                                <li><a >Deutsch</a></li>
+                                <li><a >한글</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="right_col" role="main" style="padding:0">
+            <iframe allowfullscreen frameborder="0" id="iframe" src="dataset_v5.html" scrolling="no"
+                    style="position:relative;width:100%;height:1400px;">
+            </iframe>
+        </div>
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+                {{ $t('footer')}}
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<script type="text/javascript" src="vendors/js/jquery/2.2.3/jquery.js"></script>
+<script type="text/javascript" src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/search.js"></script>
+<script type="text/javascript" src="vendors/js/dataset/user.js"></script>
+<!-- PNotify -->
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.js"></script>
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script type="text/javascript" src="vendors/pnotify/dist/pnotify.nonblock.js"></script>
+<!-- Custom Theme Scripts -->
+<!--<script src="vendors/js/custom.min.js"></script>-->
+
+
+<script type="text/javascript" src="vendors/js/vue/vue.js"></script>
+<script type="text/javascript" src="vendors/js/vue/vue-i18n.min.js"></script>
+<script type="text/javascript" src="vendors/js/language.js"></script>
+<script type="text/javascript" src="vendors/js/vue/vue-cookies.js"></script>
+<script type="text/javascript" src="vendors/js/page.js"></script>
+
+
+<script type="text/javascript" src="vendors/js/jquery/plugin/jquery.cookie.js"></script>
+<script src="vendors/bootstrap-toggle-master/js/bootstrap-toggle.js"></script>
+<script type="text/javascript" src='vendors/js/robot/robot.js'></script>
+
+
+
+<script>
+    if($cookies.get('language')){
+        i18n.locale = $cookies.get('language')
+    }
+    if($cookies.get('username') == 'admin'){
+        document.getElementById('iframe').src='admin.html';
+    }
+
+    new Vue({
+        el: '.main_container',
+        i18n
+    })
+
+    $BODY = $('body');
+    $MENU_TOGGLE = $('#menu_toggle');
+    $SIDEBAR_MENU = $('#sidebar-menu');
+    $SIDEBAR_FOOTER = $('.sidebar-footer');
+    $LEFT_COL = $('.left_col');
+    $RIGHT_COL = $('.right_col');
+    $NAV_MENU = $('.nav_menu');
+    $FOOTER = $('footer');
+
+    $MENU_TOGGLE.on('click', function() {
+		console.log('clicked - menu toggle');
+
+		if ($BODY.hasClass('nav-md')) {
+		    // console.log('1')
+			$SIDEBAR_MENU.find('li.active ul').hide();
+			$SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
+		} else {
+		    // console.log('2')
+			$SIDEBAR_MENU.find('li.active-sm ul').show();
+			$SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
+		}
+	$BODY.toggleClass('nav-md nav-sm');
+	setContentHeight();
+
+    });
+
+    var setContentHeight = function () {
+        // reset height
+        $RIGHT_COL.css('min-height', $(window).height());
+
+        var bodyHeight = $BODY.outerHeight(),
+            footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
+            leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
+            contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
+
+        // normalize content
+        contentHeight -= $NAV_MENU.height() + footerHeight;
+
+        $RIGHT_COL.css('min-height', contentHeight);
+    };
+</script>
+
+</body>
+</html>

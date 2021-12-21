@@ -1,0 +1,475 @@
+::-webkit-scrollbar{ display:none; }
+
+/*webkit内核*/
+.scroll_content::-webkit-scrollbar {
+    width:0px;
+    height:0px;
+}
+::-webkit-scrollbar{
+        width:0px;
+        opacity:0;
+        -webkit-overflow-scrolling: touch;
+    }
+.scroll_content::-webkit-scrollbar-button    {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-webkit-scrollbar-track     {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-webkit-scrollbar-track-piece {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-webkit-scrollbar-thumb{
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-webkit-scrollbar-corner {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-webkit-scrollbar-resizer  {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-webkit-scrollbar {
+    width:10px;
+    height:10px;
+}
+/*o内核*/
+.scroll_content .-o-scrollbar{
+    -moz-appearance: none !important;   
+    background: rgba(0,255,0,0) !important;  
+}
+.scroll_content::-o-scrollbar-button    {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-o-scrollbar-track     {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-o-scrollbar-track-piece {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-o-scrollbar-thumb{
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-o-scrollbar-corner {
+    background-color:rgba(0,0,0,0);
+}
+.scroll_content::-o-scrollbar-resizer  {
+    background-color:rgba(0,0,0,0);
+}
+/*IE10,IE11,IE12*/
+.scroll_content{
+    -ms-scroll-chaining: chained;
+    -ms-overflow-style: none;
+    -ms-content-zooming: zoom;
+    -ms-scroll-rails: none;
+    -ms-content-zoom-limit-min: 100%;
+    -ms-content-zoom-limit-max: 500%;
+    -ms-scroll-snap-type: proximity;
+    -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+    -ms-overflow-style: none;
+    overflow: auto;
+}
+
+
+body{
+    margin-top:3%;
+    margin-bottom:3%;
+    margin-left:6%;
+    margin-right:6%;
+}
+div{
+    box-sizing:border-box;
+}
+.popover{
+    position: fixed;
+}
+#currentstatus div{
+    overflow:hidden;
+}
+#shopsurvey div{
+    overflow:hidden;
+}
+.modal-foot div{
+    overflow: auto;
+}
+#Loading {
+    text-align:center;
+    font-size: 60px;
+}
+#FirstPage div{
+    overflow: scroll;
+}
+#SecondPage div{
+    overflow: scroll;
+}
+#SecondPage .ChartSecond{
+    margin:25px;
+}
+#ThirdPage div{
+    overflow: scroll;
+}
+#ThirdPage{
+    overflow: scroll;
+}
+#FourthPage div{
+    overflow: scroll;
+}
+
+ul#history-ul{
+    list-style: none;
+    padding-inline-start:0px;
+}
+li#historytitle{
+    padding: 0px;
+}
+td{
+    valign: middle
+}
+
+#myScrollspy li{
+    padding: 5px;
+}
+#myScrollspy li.odd{
+    background-color: #f2f4fb;
+}
+#myScrollspy li#chatservice{
+    background-color: #0f81c8;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+}
+#myScrollspy #listTitle{
+    font-size:20px;
+    text-align: center
+}
+#myScrollspy .list-group-item{
+    border-width: 1px;
+}
+
+#currentstatus #headline #title{
+    float:left;
+}
+#currentstatus #headline #updatetime{
+    float:right;
+    margin-top:10px;
+    font-size: 12px;
+}
+#chart_currentstatus_left{
+    height:150px
+}
+#currentstatus #statuscard #card_left #paid{
+    font-size:30px
+}
+#currentstatus #statuscard #card_left #status_data{
+    font-size:15px;
+    color:gray;
+}
+#currentstatus #statuscard #card_left #status_data span{
+    font-size:15px;
+    color:black;
+}
+#currentstatus #status_right{
+    padding: 0px;
+}
+#currentstatus #status_right div{
+    padding-right: 0px;
+    padding-left: 7px;
+}
+
+#currentstatus #status_right #columns{
+    font-size:18px;
+}
+#currentstatus #status_right #nums{
+    font-size:15px;
+    color:gray;
+}
+#currentstatus #status_right #nums span{
+    font-size:15px;
+    color:black;
+}
+
+#total_static td.actived{
+    background-color:#f2f4fb;
+}
+#total_static td i.fa.fa-angle-double-up{
+    color:red
+}
+#total_static td i.fa.fa-angle-double-down{
+    color:green
+}
+
+#shopsurvey #title{
+    float:left;
+}
+#shopsurvey #survey_updatetime{
+    float:right;
+    margin-top:10px;
+    font-size:10px;
+}
+#shopsurvey #surveycard #survey_rank{
+    padding-right:0px;
+}
+#shopsurvey #surveycard #survey_rank_table{
+    padding:0px;
+}
+
+#shopsurvey #surveycard #rank{
+    height: 100px;
+}
+#shopsurvey #chart_shopsurvey_rank{
+    height: 100px;
+}
+#shopsurvey #chart_shopsurvey_progress{
+    height: 50px;
+}
+#shopsurvey #progress_textline #percentage{
+    font-size:15px;
+}
+#shopsurvey #progress_textline #plandata{
+    font-size:15px;
+}
+
+#op_2 td{
+    height:60px;
+}
+
+#SecondPage .active{
+    background-color: rgba(38, 185, 154, 0.1);
+}
+#SecondPage .col-md-6{
+    padding: 20px,15px
+}
+
+#ThirdPage .active{
+    background-color: rgba(38, 185, 154, 0.1);
+}
+
+
+[v-cloak] {
+    display: none;
+}
+
+
+.left-bar{
+    display: block;
+    background-color: white;
+    height: 100px;
+    width: 220px;
+    right: -30px;
+    position: absolute;
+    z-index: -1;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    padding-left:20px;
+}
+.history{background:url(../images/databoard/line04.gif) repeat-y 45px 0;overflow:hidden;position:relative;left:0;}
+.history-date h2{background:#fff url(../images/databoard/icon06.gif) no-repeat 28px 0;height:59px;font-size:25px;font-family:微软雅黑;font-weight:normal;padding-left:45px;margin-bottom:30px; }
+.history-date h2.first{position:absolute;left:-12px;top:0;;z-index:99;}
+.history-date ul li{background:url(../images/databoard/icon07.gif) no-repeat 38px 11px;padding:12px 0px 12px 0px;zoom:1;}
+.history-date ul li:hover{background-color: rgba(38,185,154,.10)}
+.history-date ul li:hover{font-color:grey;cursor:pointer;}
+.history-date ul li:after{content:" ";display:block;height:0;clear:both;visibility:hidden;}
+.history-date ul li h3{float:left;margin-top:-10px;margin-left:56px;text-align:right;color:#c3c3c3;font:normal 16px/16px Arial;}
+.history-date ul li dl{float:left;padding-left:30px;margin-top:-5px;}
+.history-date ul li dl dt{margin-left:32px;font:16px/24px 微软雅黑;color:#737373;}
+
+/*服务视窗*/
+.LineChartTable .Column{
+    padding-left: 8px;
+}
+.LineChartTable .Column #title{
+    font-size: 15px;
+}
+.LineChartTable .Column #rate{
+    font-size: 26px;
+}
+.LineChartTable .Column #num{
+    font-size: 26px;
+}
+.LineChartTable .Column #yesterday{
+    font-size: 13px;
+    color: gray;
+}
+.LineChartTable .Column #yesterday i#up{
+    color: red;
+}
+.LineChartTable .Column #yesterday i#down{
+    color: green;
+}
+.LineChartTable .Column #yesterday span{
+    color: black;
+}
+.LineChartTable .service_experience_charts{
+    height: 300px;
+}
+.LineChartTable .charts{
+    margin-top: 20px;
+    margin-left: 0;
+    height: 200px;
+}
+
+.Sublist>#title{
+    font-size:15px;
+}
+.Sublist>table{
+    border-collapse: collapse;    
+}
+.Sublist>table tr:nth-child(1){
+    border-bottom-color: gray;
+    border-bottom:2px;
+}
+.Sublist>table td:nth-child(2){
+    width:50%
+}
+
+.list-complete-active, .list-complete-leave-active {
+    position: absolute;
+    transition: opacity 2s;
+  }
+.list-complete-enter, .list-complete-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+[class*=list-complete-e] {
+    transition: all 1.5s;
+    display: inline-block;
+    margin-right: 10px;
+}
+.list-complete-enter
+/* .list-complete-leave-active for below version 2.1.8 */ {
+    opacity: 0;
+    transform: translateX(30px);
+}
+.list-complete-leave-to
+/* .list-complete-leave-active for below version 2.1.8 */ {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+[class*=move] {
+   transition: transform 2s;
+}
+
+#FourthPage {
+    height: 83%
+}
+#FourthPage #NodeFrame{
+    height: 86%;
+    width: 95%;
+    margin-left: 2.5%;
+}
+#FourthPage #NodeFrame #nodered{
+    left:-180px;
+    top:-80px;
+    position: relative;
+    border: transparent;
+    height: 125%;
+    width: 130%;
+}
+
+#Manage_Total .charts{
+    height:200px;
+    padding:0;
+}
+#Manage_Total .Title{
+    font-size: 15px;
+    font-weight: bold;
+}
+#Manage_Total .LabelNumber{
+    font-size: 24px;
+    font-weight: bold;
+}
+#Manage_Total .col-md-3{
+    padding: 0;
+}
+#Manage_Total .col-md-6{
+    padding: 0;
+}
+#Manage_Total .col-md-4{
+    padding: 10px 15px;
+}
+#Manage_Total .col-md-8{
+    padding: 10px 15px;
+}
+
+#Flow #title {
+    font-size: 15px;
+    font-weight: bolder;
+}
+#Flow #chart_flow {
+    height:220px;
+    padding:20px 0 0 0;
+}
+#Flow #table_flow {
+    padding:0
+}
+#Flow #table_flow tr>td:nth-child(1){
+    width:15%
+}
+#Flow #table_flow tr>td:nth-child(2){
+    width:35%
+}
+#Flow #table_flow tr>td:nth-child(3){
+    width:25%
+}
+#Flow #table_flow tr>td:nth-child(4){
+    width:25%
+}
+
+#Spread .col-md-8>span#title {
+    font-size:15px;
+    font-weight: bolder;
+}
+#Spread .col-md-3 {
+    padding: 15px 0 0 0;
+}
+#Spread .col-md-3>#number{
+    font-size: 24px;
+    font-weight: bold;
+}
+#Spread #chart_spread {
+    height:200px;
+    padding:0;
+}
+#Spread #table_spread {
+    padding:0;
+}
+#Spread #table_spread tr>td:nth-child(1){
+    width:20%
+}
+#Spread #table_spread tr>td:nth-child(2){
+    width:45%
+}
+#Spread #table_spread tr>td:nth-child(3){
+    width:25%
+}
+#Spread #table_spread tr>td:nth-child(4){
+    width:10%
+}
+
+
+#evaluation .well {
+    height:150px;
+    padding:8px;
+}
+#evaluation #user {
+    font-size:15px;
+    font-weight: bold;
+    padding: 0;
+}
+#evaluation #date {
+    font-size: 10px;
+    color: gray;
+    padding: 5px 0 0 0 ;
+}
+#evaluation #star{
+    padding: 0;
+    color:orange
+}
+#evaluation #content{
+    padding: 15px 0 0 0;
+    
+}
+
+#evaluation #Eval_Chart{
+    margin-top: 150px;
+    height:600px;
+}

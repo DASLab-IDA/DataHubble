@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+		{{message}}
+		<input type="text" v-model="message">
+		<button @click="showm"></button>
+    </div>
+    <div id="multi">
+        <table>
+            <thead>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+            </thead>
+            <tbody v-for="(l,index) in lists">
+                <tr>
+                    <td><input type="checkbox" name="" :value="l.id" v-model="checked"></td>
+                    <td>{{index+1}}</td>
+                    <td>{{l.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button @click="showchecked">show checked</button>
+    </div>
+</body>
+<script src="vendors/js/jquery/2.2.3/jquery.min.js"></script>
+<script src="vendors/js/echarts.js"></script>
+<script src="vendors/js/vue/vue.js"></script>
+<script>
+	/*
+    function ajax_data_echarts(url,param,e_option,e_name,){
+        let r_data;
+        $.ajax({
+            url:url,
+            data:param,
+            success:function(data){
+                r_data = data;
+            }
+        })
+        return r_data;
+        let option = e_option;
+        echarts.init(document.getElementById(e_name)).setoption(e_option);
+        let vue = new Vue({
+            el:"#"+e_name,
+            data:null,
+        })
+    }*/
+	var vue = new Vue({
+		el:"#app",
+		data:{
+			message:"hello!"
+		},
+		methods:{
+			showm:function(){
+				alert(this.message)
+			}
+		}
+	})
+    var mul=new Vue({
+        el:"#multi",
+        data:{
+            lists:[
+                {
+                    id:"001001",
+                    name:"first"
+                },
+                {
+                    id:"001002",
+                    name:"second"
+                },
+                {
+                    id:"001003",
+                    name:"third"
+                }
+            ],
+            checked:[]
+        },
+        methods:{
+            showchecked:function(){
+                for(id of this.checked)
+                alert(id);
+            }
+        }
+    })
+    let testy = {
+    "data": [
+        {
+            "2004-04-05": [
+                813,
+                34344.340000000004
+            ]
+        },
+        {
+            "2004-04-06": [
+                358,
+                19285.899999999998
+            ]
+        },
+        {
+            "2004-04-07": [
+                632,
+                32134.68
+            ]
+        }
+    ]
+};
+let date = [];
+let quan = [];
+let price = [];
+for(i in testy.data){
+    for(item in testy.data[i]){
+        date.push(item);
+        quan.push(testy.data[i][item][0]);
+        price.push(testy.data[i][item][1]);
+    }    
+} 
+console.log(date);
+console.log(quan);
+console.log(price);
+let ttt = {
+    "data": [
+        {
+            "sum((price * CAST(quantity AS DOUBLE)))": "DoubleType"
+        },
+        {
+            "1": 63395382.92999999
+        }
+    ]
+}
+console.log(ttt.data[1]["1"])
+item = "2005-04-01 ~ 2005-04-07"
+console.log(item.substr(5,5)+"~"+item.substr(18,5))
+    
+</script>
+</html>

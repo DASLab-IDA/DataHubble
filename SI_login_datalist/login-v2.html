@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>smart interaction</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="vendors/css/bootstrap.css">
+    <!-- Font Awesome -->
+    <link href="vendors/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="vendors/animate.css/animate.min.css" rel="stylesheet">
+</head>
+<style>
+  p{margin:0 auto}
+</style>
+<body>
+  <div class="row" style="height:90px">
+    
+    <div class="col-md-8" style="padding-left:80px;padding-top:10px">
+      <img src="vendors/images/sycm_logo.png" alt="image1" style="margin-top:1.5%">
+    </div>
+    <div class="col-md-4"></div>
+
+  </div>
+  <div class="row" style="height:400px" style="position:relative">
+    <div class="col-sm-12">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators" style="color: black">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="vendors/images/sycm_banner1.jpg" alt="image1">
+            </div>
+            <div class="carousel-item">
+              <img src="vendors/images/sycm_banner2.jpg" alt="image2">
+            </div>
+            <div class="carousel-item">
+              <img src="vendors/images/sycm_banner3.jpg" alt="image3">
+            </div>
+          </div>
+        </div>
+    </div>
+    <!--login box-->
+    <div class="card" style="position: absolute;left:67%;top:15%;align-self: center" id="login_box">
+      <div class="card-body" style="width:300px">
+        <div class="card bg-danger text-white" v-show="error">
+          <div class="card-body" id="error"></div>
+        </div>
+        <span style="font-size: 12px;font-weight: 700;color:#666">登录名：</span><br>
+        <input type="text" value="" v-model="username" class="col-sm-12"><br>
+        <span style="font-size: 12px;font-weight: 700;color:#666">登录密码：</span><a href="#" style="float: right;font-size: 12px;color:#6d6d6d;padding-top:4px">忘记登录密码？</a><br>
+        <input type="password" value="" v-model="password" class="col-sm-12"><br>
+        <br>
+        <button class="col-md-12 btn" type="button" @click="log_in" style="background-color:#fe7c00;color:white">登&nbsp;&nbsp;录</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="events">
+    <div class="col-md-12" style="padding-left:15%;padding-right:10%">
+      <div class="row">
+        <div class="col-sm-4" v-for="e in event" style="padding:0px">
+        <div class="row">
+          <div class="col-sm-3" style="padding-left:0px;padding-right:0px">
+            <span class="fa-stack fa-3x">
+              <i class="fa fa-circle fa-stack-2x" :style="{color:e.color}"></i>
+              <i :class="e.icon" style="color:white"></i>
+            </span>
+          </div>
+          <div class="col-sm-9" style="padding-left:10px">
+            <h4 :style="{color:e.color}" style="font-size:20px;font-family: Microsoft YaHei,SimHei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;">{{e.title}}</h4>
+            <div v-for="a in e.article">
+              <p><a :href="a.link" style="font-size: 12px;color:#666"><span>{{a.title}}</span></a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <br><br>
+  <div class="row">
+    <div class="col-md-12" id="foot" style="padding-left:0%;padding-right:10%;text-align: center;font-size: 12px;color:#a0a0a0;font-family: PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimHei,WenQuanYi Micro Hei,sans-serif;">
+      <span v-for="(l,index) in links" >
+        <span v-if="index!=0"> | </span>
+        <a :href="l.link" style="color:#a0a0a0">{{l.text}}</a>
+      </span>
+      <br><span>免责声明：本界面仿照淘宝生意参谋界面制作，仅做演示之用</span>
+    </div>
+  </div>
+</body>
+<script src="vendors/js/jquery/2.2.3/jquery.js"></script>
+<script src="vendors/js/bootstrap.js"></script>
+<script src="vendors/js/vue/vue.js"></script>
+<script>
+  {//登录框
+    let login = new Vue({
+      el:"#login_box",
+      data:{
+        username:"",
+        password:"",
+        error:false,
+
+      },
+      methods:{
+        log_in:function(){
+          if(this.username==""||this.password==""){
+            document.getElementById("error").innerHTML="请输入用户名和密码";
+            this.error=true;
+            return 0;
+          }
+          let this_vue = this;
+          $.ajax({
+            url:"http://10.141.223.30:8083/api/user/login",
+            method:"POST",
+            dataType:"json",
+            contentType: "application/json",
+            data:JSON.stringify({"username":this.username,"password":this.password}),
+            success:function(data,textStatus,jqXHR){
+              //category = data.category;
+              //$.cookie('category', category);
+              //$.cookie('username', name);
+              let statusCode = jqXHR.status;
+              console.log(statusCode == 204);
+              if(statusCode == 200){
+                this_vue.error=false;
+                window.location.href="page-b.html"
+              }
+              else if(statusCode == 204){
+                document.getElementById("error").innerHTML="用户名或密码错误";
+                this_vue.error=true;
+              }
+            },
+            failure:function(){
+              document.getElementById("error").innerHTML="网络错误，请稍后访问";
+              this_vue.error=true;
+            }
+          })
+        }
+      }
+    })
+  }
+  {//新闻框
+    let events=new Vue({
+      el:"#events",
+      data:{
+        event:[
+          {
+            icon:"fa fa-bullhorn fa-stack-1x",
+            color:"#2d74c8",
+            title:"官方动态",
+            article:[
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?spm=0.0.0.0.x0Gwwi&postId=7441761",
+                title:"2017 赚钱必备“财务分析” 快抢内测机会！"
+              },
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?spm=a210m.8146702.0.0.424dfd4cwOXVQ6&postId=8162781",
+                title:"1682亿背后TOP品牌如何进行活动复盘"
+              },
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?spm=a210m.8146702.0.0.33a6b417vKvJel&postId=7836225",
+                title:"生意参谋流量纵横3.0全新上线"
+              },
+            ]
+          },
+          {
+            icon:"fa fa-question fa-stack-1x",
+            color:"#b4d962",
+            title:"常见问题FAQ",
+            article:[
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?spm=a21ag.8365346.faq.1.2930410cF5XlFH&postId=8941492",
+                title:"数据作战室大屏都包含哪些功能？"
+              },
+              {
+                link:"javascript:void(0)",
+                title:"生意参谋指标在哪里查看？"
+              },
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?spm=a210m.8146702.0.0.6e5d410chOphnE&postId=8961470",
+                title:"双11预热期要重点关注哪些数据？"
+              },
+            ]
+          },
+          {
+            icon:"fa fa-file-text-o fa-stack-1x",
+            color:"#ffcd77",
+            title:"成功故事",
+            article:[
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?spm=a210m.8146702.0.0.6e5d410chOphnE&postId=8969872",
+                title:"双11预热必备：8步帮你理清大促思路"
+              },
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?postId=6824161",
+                title:"干货：如何让宝贝搜索排名上首页？"
+              },
+              {
+                link:"https://sycm.bbs.taobao.com/detail.html?postId=6824256",
+                title:"销量不高？如何用直通车爆破！"
+              },
+            ]
+          },
+        ]
+      }
+    })
+  }
+  {//底部标题
+    let foot = new Vue({
+      el:"#foot",
+      data:{
+        links:[
+          {
+            text:"阿里巴巴集团",
+            link:""
+          },
+          {
+            text:"阿里巴巴国际站",
+            link:""
+          },
+          {
+            text:"阿里巴巴中国站",
+            link:"dataset_v5.html"
+          },
+          {
+            text:"全球速卖通",
+            link:""
+          },
+          {
+            text:"淘宝网",
+            link:""
+          },
+          {
+            text:"天猫",
+            link:""
+          },
+          {
+            text:"聚划算",
+            link:""
+          },
+          {
+            text:"一淘",
+            link:""
+          },
+          {
+            text:"阿里妈妈",
+            link:""
+          },
+          {
+            text:"阿里云计算",
+            link:""
+          },
+          {
+            text:"云OS",
+            link:""
+          },
+          {
+            text:"万网",
+            link:""
+          },
+          {
+            text:"中国雅虎",
+            link:""
+          },
+          {
+            text:"支付宝",
+            link:""
+          },
+          {
+            text:"数据集",
+            link:"dataset_v5.html"
+          },
+        ]
+      },
+
+    })
+
+  }
+</script>
+<script type="text/javascript" src='vendors/js/jquery/jquery.min.js'></script>
+<script type="text/javascript" src="vendors/js/jquery/plugin/jquery.cookie.js"></script>
+</html>
